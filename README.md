@@ -18,6 +18,20 @@ Typical commands are:
 
     $ dw [info]            # show task information
 
+    $ dw start task_name   # start working on task_name at a specific branch
+
+    $ dw progress 80       # mark the task as completed at 80 percent
+
+    $ dw complete          # mark the implemention is complete
+
+    $ dw close             # this command is for project leader only, he will close the current task,
+                           # merge it into `develop` trunk and delete the task branch (both locally and remotely).
+
+    $ dw release           # this is available if in a release branch and the current user is leader,
+                           # the change will be merged into `master` branch with a new version number.
+
+    $ dw clean             # delete local branches that corresponds to completed tasks.
+
 
 ROADMAP File Format
 --------------------
