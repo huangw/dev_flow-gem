@@ -14,21 +14,21 @@ Work Flow
 1. Write a ROADMAP file in a specified format
 2. Run `dw` command in directory contains the `ROADMAP` file (usually the root of you application)
 
-    $ dw [info]            # show task information
+    dw [info]            # show task information
 
-    $ dw start task_name   # start working on task_name at a specific branch
+    dw start task_name   # start working on task_name at a specific branch
 
-    $ dw progress 80       # mark the task as completed at 80 percent
+    dw progress 80       # mark the task as completed at 80 percent
 
-    $ dw complete          # mark the implemention is complete
+    dw complete          # mark the implemention is complete
 
-    $ dw close             # this command is for project leader only, he will close the current task,
+    dw close             # this command is for project leader only, he will close the current task,
                            # merge it into `develop` trunk and delete the task branch (both locally and remotely).
 
-    $ dw release           # this is available if in a release branch and the current user is leader,
+    dw release           # this is available if in a release branch and the current user is leader,
                            # the change will be merged into `master` branch with a new version number.
 
-    $ dw clean             # delete local branches that corresponds to completed tasks.
+    dw clean             # delete local branches that corresponds to completed tasks.
 
 ROADMAP File Format
 --------------------
