@@ -14,13 +14,13 @@ Work Flow
 1. Write a ROADMAP file in a specified format
 2. Run `dw` command in directory contains the ROADMAP file (usually the root of you application)
    
-    > dw                   # show task informations
-    > dw start task_name   # start working on task_name at a specific branch
-    > dw progress 80       # mark the task is completed at 80 percent
-    > dw complete          # mark the implemention is complete
-    > dw close             # this command is for project leader only, he will close the current task,
+    $ dw                   # show task informations
+    $ dw start task_name   # start working on task_name at a specific branch
+    $ dw progress 80       # mark the task is completed at 80 percent
+    $ dw complete          # mark the implemention is complete
+    $ dw close             # this command is for project leader only, he will close the current task,
                            # merge it into `develop` trunk and delete the task branch.
-    > dw release           # this is available if in a release branch and the current user is leader,
+    $ dw release           # this is available if in a release branch and the current user is leader,
                            # the change will be merged into `master` branch with a new version number.
 
 ROADMAP File Format
@@ -83,9 +83,17 @@ A typical task definition line should following the format:
 
 - if the task depends on other task, puts their id after `->`. Dependencies are treat as an indicator only (for example show special colors in Gantt charts).
 
-### Special Tasks
+### Semantic Versioning and Special Tasks
 
-Tasks with branch name starts with `release_`, `milestone_`, `bugfix_` ... will have special means. 
+Tasks with branch name starts with `release_`, `bugfix_`, `hotfix_` ... will have special means. 
+
+`milestone_` is a special type of task that corresponding to important event in the development flow but
+not reflects to the version (for example event for code review). 
+
+Other tasks are under the `task_` name-space and have no versioning meanings.
+
+You use `release_` branch to manage major and minor versioning, e.g. `release_v0.1` will create a tag 
+`version_0.1`, And bugfix, hotfix branches will add-up fix numbers after it: `version_0.1.28`. 
 
 Local Configuration
 ---------------------
