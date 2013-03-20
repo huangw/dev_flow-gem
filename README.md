@@ -95,6 +95,9 @@ Other tasks are under the `task_` name-space and have no versioning meanings.
 You use `release_` branch to manage major and minor versioning, e.g. `release_v0.1` will create a tag 
 `version_0.1`, And bugfix, hotfix branches will add-up fix numbers after it: `version_0.1.28`. 
 
+Sometimes you may want to use 'prepare releases' such as `release_v0.1a`, `release_v0.1b`, avoid sandwich
+hotfix and bugfix branch between prepare releases and releases.
+
 Local Configuration
 ---------------------
 
