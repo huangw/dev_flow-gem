@@ -30,3 +30,5 @@ else
   raise "unknown command #{command}"
 end
 
+# switch to init mode unless .dev_flow file exists
+
