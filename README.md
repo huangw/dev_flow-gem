@@ -83,6 +83,10 @@ A typical task definition line should following the format:
 
 - if the task depends on other task, puts their id after `->`. Dependencies are treat as an indicator only (for example show special colors in Gantt charts).
 
+### Special Tasks
+
+Tasks with branch name starts with `release_`, `milestone_`, `bugfix_` ... will have special means. 
+
 Local Configuration
 ---------------------
 
@@ -96,5 +100,10 @@ or team members, indicates who is currently working on the local working directo
 Command Details
 -------------------
 
+- `dw init` default command if no `.dev_flow` file found.
+
+- `dw [list]` list all tasks assigned to you, if you are the leader, all tasks will be listed. Or you can use `--all ` option or `--me` option or `--resource someone` to explicitly determine who's tasks to show.
+
+- `dw start [branch_name]` start to working on a task (create a `task/branch_name` git branch).
 
 
