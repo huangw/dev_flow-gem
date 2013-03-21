@@ -1,0 +1,55 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+App	lib/dev_flow/app.rb	/^  class App$/;"	c	class:DevFlow
+DevFlow	lib/dev_flow/app.rb	/^module DevFlow$/;"	m
+DevFlow	lib/dev_flow/info.rb	/^module DevFlow$/;"	m
+DevFlow	lib/dev_flow/init.rb	/^module DevFlow$/;"	m
+DevFlow	lib/dev_flow/roadmap.rb	/^module DevFlow$/;"	m
+DevFlow	lib/dev_flow/task.rb	/^module DevFlow$/;"	m
+DevFlow	lib/dev_flow/task_console.rb	/^module DevFlow$/;"	m
+DevFlow	lib/dev_flow/version.rb	/^module DevFlow$/;"	m
+Info	lib/dev_flow/info.rb	/^  class Info < App$/;"	c	class:DevFlow
+Init	lib/dev_flow/init.rb	/^  class Init < App$/;"	c	class:DevFlow
+RoadMap	lib/dev_flow/roadmap.rb	/^  class RoadMap$/;"	c	class:DevFlow
+String	lib/dev_flow/app.rb	/^class String; include Term::ANSIColor end$/;"	c
+Task	lib/dev_flow/task.rb	/^  class Task$/;"	c	class:DevFlow
+Task	lib/dev_flow/task_console.rb	/^  class Task$/;"	c	class:DevFlow
+add_to_gitignore	lib/dev_flow/init.rb	/^    def add_to_gitignore$/;"	f	class:DevFlow.Init
+all_member_names	lib/dev_flow/app.rb	/^    def all_member_names$/;"	f	class:DevFlow.App
+as_title	lib/dev_flow/task_console.rb	/^    def as_title$/;"	f	class:DevFlow.Task
+ask_rebase	lib/dev_flow/app.rb	/^    def ask_rebase$/;"	f	class:DevFlow.App.hr.hrb
+display_close_waiting	lib/dev_flow/app.rb	/^    def display_close_waiting$/;"	f	class:DevFlow.App.hr.hrb
+display_tasks	lib/dev_flow/app.rb	/^    def display_tasks$/;"	f	class:DevFlow.App.hr.hrb
+find_parent	lib/dev_flow/roadmap.rb	/^    def find_parent level$/;"	f	class:DevFlow.RoadMap
+hello	lib/dev_flow/app.rb	/^    def hello$/;"	f	class:DevFlow.App.hr.hrb
+hr	lib/dev_flow/app.rb	/^    def hr; "-"*76 end$/;"	f	class:DevFlow.App
+hrb	lib/dev_flow/app.rb	/^    def hrb; "="*76 end$/;"	f	class:DevFlow.App.hr
+i_am_leader	lib/dev_flow/app.rb	/^    def i_am_leader$/;"	f	class:DevFlow.App
+i_have_power	lib/dev_flow/app.rb	/^    def i_have_power$/;"	f	class:DevFlow.App
+initialize	lib/dev_flow/app.rb	/^    def initialize config, command$/;"	f	class:DevFlow.App
+initialize	lib/dev_flow/roadmap.rb	/^    def initialize file, config$/;"	f	class:DevFlow.RoadMap
+initialize	lib/dev_flow/task.rb	/^    def initialize level,file="-",ln=0$/;"	f	class:DevFlow.Task
+is_completable?	lib/dev_flow/task_console.rb	/^    def is_completable?$/;"	f	class:DevFlow.Task
+is_completed?	lib/dev_flow/task.rb	/^    def is_completed?$/;"	f	class:DevFlow.Task
+is_delayed?	lib/dev_flow/task.rb	/^    def is_delayed? # usually red$/;"	f	class:DevFlow.Task
+is_deleted?	lib/dev_flow/task.rb	/^    def is_deleted?$/;"	f	class:DevFlow.Task
+is_milestone?	lib/dev_flow/task.rb	/^    def is_milestone?$/;"	f	class:DevFlow.Task
+is_parent?	lib/dev_flow/task.rb	/^    def is_parent?$/;"	f	class:DevFlow.Task
+is_pending?	lib/dev_flow/task.rb	/^    def is_pending?$/;"	f	class:DevFlow.Task
+is_urgent?	lib/dev_flow/task.rb	/^    def is_urgent?  # usually orange$/;"	f	class:DevFlow.Task
+is_workable?	lib/dev_flow/task_console.rb	/^    def is_workable?$/;"	f	class:DevFlow.Task
+last_task	lib/dev_flow/roadmap.rb	/^    def last_task$/;"	f	class:DevFlow.RoadMap
+need_to_close	lib/dev_flow/app.rb	/^    def need_to_close $/;"	f	class:DevFlow.App
+parse	lib/dev_flow/roadmap.rb	/^    def parse file = nil$/;"	f	class:DevFlow.RoadMap
+parse	lib/dev_flow/task.rb	/^    def parse line, headers = {}$/;"	f	class:DevFlow.Task
+process!	lib/dev_flow/info.rb	/^    def process!$/;"	f	class:DevFlow.Info
+process!	lib/dev_flow/init.rb	/^    def process!$/;"	f	class:DevFlow.Init
+rewrite	lib/dev_flow/roadmap.rb	/^    def rewrite task_hash$/;"	f	class:DevFlow.RoadMap
+title	lib/dev_flow/roadmap.rb	/^    def title$/;"	f	class:DevFlow.RoadMap
+user	lib/dev_flow/app.rb	/^    def user$/;"	f	class:DevFlow.App
+validate!	lib/dev_flow/task.rb	/^    def validate!$/;"	f	class:DevFlow.Task
+write_local_config	lib/dev_flow/init.rb	/^    def write_local_config hash$/;"	f	class:DevFlow.Init

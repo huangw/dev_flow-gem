@@ -35,7 +35,7 @@ module DevFlow
     end
 
     def is_completed?
-      self.completed_at ? true : false
+      self.progress == 100
     end
 
     def is_pending?

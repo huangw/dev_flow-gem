@@ -27,6 +27,14 @@ optparse = OptionParser.new do |opts|
     raise "the specified members file #{mf} is not exists." unless File.exists? mf
   end
 
+  opts.on('-o', '--offline', 'do not use remote git server') do 
+    options[:offline] = true
+  end
+
+  opts.on('-v', '--verbose', 'print more messages') do
+    options[:verbose] = true
+  end
+
   # TODO filter tasks
 
   opts.on_tail('-h', '--help', 'Display this screen') do
@@ -57,6 +65,8 @@ end
 case command
 when 'init'
   DevFlow::Init.new(options, command).process!
+when 'info'
+  DevFlow::Info.new(options, command).process!
 else
   puts "unknown command #{command}"
 end
