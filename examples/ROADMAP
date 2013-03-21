@@ -61,7 +61,7 @@ year: 2013
   [++] api_dsgn_fo_clip_sec: follower和clip的API结构  03/30-04/10 @huangw;xuyc
   [++] api_dsgn_action_sec: action和comment相关的API结构  03/30-04/10 @huangw
 [+] release_api_design_0.2: Review API Design 0.2 04/10 @huangw;sunyr;xuyc;cuibg;wangqh;lizh
-[+] release_0.1: 搭建完开发环境后发布到测试用服务器 04/10 @sunyr;huangw
+[+] release_0.1: 搭建完开发环境后发布到测试用服务器 04/10 @sunyr;huangw -> release_api_design_0.1;model_spec
 
 [+] implementation: 实现API功能 03/30-04/30 @huangw;sunyr
 [+] test: API功能同步测试 03/30-04/30 @huangw;lizh
