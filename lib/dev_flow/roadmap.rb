@@ -40,8 +40,11 @@ module DevFlow
 
         if /^\s*\[(?<plus_>[\+\s]+)\]\s(?<contents_>.+)/ =~ line
           if @tasks.size == 0 and head_part.size > 0
-            @config = @config.merge YAML.load(head_part) 
-            head_part = ""
+            hhash = YAML.load(head_part) 
+            members =  @config["members"]
+            members.merge!(hhash["members"])
+            @config = @config.merge hhash
+            @config["members"] = members
           end
           line.chomp!
           task = Task.new(plus_.to_s.count("+"), self.file, $.).parse(contents_, @config)

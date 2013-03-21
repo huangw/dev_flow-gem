@@ -21,7 +21,7 @@ optparse = OptionParser.new do |opts|
     options[:local_config] = lc
   end
 
-  options[:member_file] = 'members.yml'
+  options[:members_file] = 'members.yml'
   opt.on('-m MEMBERS_FILE', '--members_file MEMBERS_FILE', 'use an other members file') do |mf|
     options[:members_file] = mf
     raise "the specified members file #{mf} is not exists." unless File.exists mf

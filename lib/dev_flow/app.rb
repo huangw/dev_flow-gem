@@ -1,4 +1,5 @@
 require 'yaml'
+require 'logger'
 
 module DevFlow
   attr_accessor :config, :roadmap, :logger, :command
@@ -6,18 +7,17 @@ module DevFlow
     def initialize config, command
       @config, @command = config, command
 
-      if File.exists? (@config[:members_file])
-        @config.merge(YAML.load(File.open(@config[:members_file], 'r:utf-8').read)) 
+      if @config[:members_file] and File.exists? (@config[:members_file])
+        @config = @config.merge(YAML.load(File.open(@config[:members_file], 'r:utf-8').read)) 
       end
 
-      if File.exists? (@config[:local_config])
-        @config.merge(YAML.load(File.open(@config[:local_config], 'r:utf-8').read)) 
+      if @config[:local_config] and File.exists? (@config[:local_config])
+        @config = @config.merge(YAML.load(File.open(@config[:local_config], 'r:utf-8').read)) 
       end
 
-      if File.exists? (@config[:roadmap])
-        # fh = File.open(@config[:roadmap], 'r:utf-8')
-        # TODO: load roadmap, @config.merge roadmap.config
-        
+      if @config[:roadmap] and File.exists? (@config[:roadmap])
+        @roadmap = RoadMap.new(@config[:roadmap], @config).parse 
+        @config = @roadmap.config
       end
 
       @logger = Logger.new(STDOUT)
@@ -28,8 +28,8 @@ module DevFlow
 
     end
 
-    def all_members
-
+    def all_member_names
+      @config["members"].keys
     end
   end
 end

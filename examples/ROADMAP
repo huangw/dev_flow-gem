@@ -8,10 +8,16 @@ status: prototyping
 description: "
 PixPlus.Me的移动客户端，基于corona SDK，涵盖iOS/Android的手机和Tablet设备（P.R.T.三种情况）。Syobu Phase以phone为主，实现主要软件功能的内测版本。
 "
-team: [huangw, xuyc, liudx, cuibg, wangqh]
+members:
+  lizh: [Li Zhonghua, lizh@pe-po.com]
+  sunyr: [Sun Yunrui, sunyr@pe-po.com]
+  liudx: [Liu Dongxu, liudx@pe-po.com]
+  cuibg: [Cui Baoguo, cuibg@pe-po.com]
+  wangqh: [Wang Qinghua, wangqh@pe-po.com]
 supervisor: huangw
 leader: xuyc
 moderator: cuibg
+team: [huangw, xuyc, liudx, cuibg, wangqh]
 year: 2013
 % ----
 
