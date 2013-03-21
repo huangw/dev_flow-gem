@@ -12,19 +12,19 @@ optparse = OptionParser.new do |opts|
   opts.banner = "Usage: dw [options] [command]"
 
   options[:roadmap] = 'ROADMAP' # the roadmap file
-  opt.on('-r ROADMAP_FILE', '--roadmap ROADMAP_FILE', 'use an other roadmap file') do |roadmap|
+  opts.on('-r ROADMAP_FILE', '--roadmap ROADMAP_FILE', 'use an other roadmap file') do |roadmap|
     options[:roadmap] = roadmap
   end
 
   options[:local_config] = '.dev_flow'
-  opt.on('-l LOCAL_CONFIG', '--local-config LOCAL_CONFIG', 'use an other local configuration file') do |lc|
+  opts.on('-l LOCAL_CONFIG', '--local-config LOCAL_CONFIG', 'use an other local configuration file') do |lc|
     options[:local_config] = lc
   end
 
   options[:members_file] = 'members.yml'
-  opt.on('-m MEMBERS_FILE', '--members_file MEMBERS_FILE', 'use an other members file') do |mf|
+  opts.on('-m MEMBERS_FILE', '--members_file MEMBERS_FILE', 'use an other members file') do |mf|
     options[:members_file] = mf
-    raise "the specified members file #{mf} is not exists." unless File.exists mf
+    raise "the specified members file #{mf} is not exists." unless File.exists? mf
   end
 
   # TODO filter tasks
@@ -38,7 +38,7 @@ end
 optparse.parse!(ARGV)
 
 # determine the command
-command = ARGV[1] || 'info'
+command = ARGV[0] || 'info'
 cmd_alias = {s:'start', p:'progress', pg:'progress'}
 command = cmd_alias[command.to_sym] if cmd_alias[command.to_sym]
 
@@ -49,7 +49,10 @@ else
 end
 
 # switch to init mode unless .dev_flow file exists
-command = "init" unless File.exists? (options[:local_config])
+unless File.exists? (options[:local_config])
+  puts "Initializing your environment ... "
+  command = "init"
+end
 
 case command
 when 'init'

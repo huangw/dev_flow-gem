@@ -19,3 +19,4 @@ Thumbs.db
 */Thumbs.db
 .idea/*
 *.gem
+.dev_flow
