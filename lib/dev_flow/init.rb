@@ -2,7 +2,7 @@ module DevFlow
   class Init < App
     def process!
       
-      if @config["whoami"]
+      # if @config["whoami"]
     end
   end
 end

@@ -1,38 +1,33 @@
-# encoding: utf-8
-
-require "yaml"
-
 module DevFlow
   ## a road map represents a list of tasks
   class RoadMap
-    attr_accessor :file, :headers, :tasks,
+    attr_accessor :file, :config, :tasks,
       :branch_tasks, # branch name to task hash
-      :ln_tasks, # line number to task hash
+      :ln_tasks, # line number to task hash, used for rewrite
       :top_tasks # level 1 task list (used for id calculation)
 
-    def initialize
-      self.headers = Hash.new
-      self.tasks = Array.new
-      self.branch_tasks = Hash.new
-      self.ln_tasks = Hash.new
-      self.top_tasks = Array.new
+    def initialize file, config
+      @file, @config = file, config
+      @tasks = Array.new
+      @branch_tasks = Hash.new
+      @ln_tasks = Hash.new
+      @top_tasks = Array.new
     end
 
     def last_task
       @tasks.last
     end
     
-    def title; self.headers["title"] end
-    
-    def parse file
-      #{{{
+    def title
+      @config[:title]
+    end
+
+    def parse file = nil
       self.file = file if file
       fh = File.open(self.file, "r:utf-8")
       head_part = ""
       in_header = 0
-      first_line = nil
       fh.each do |line|
-        first_line = line unless first_line
         if /^\%\s*\-\-\-+/ =~ line
           in_header += 1
           next
@@ -45,11 +40,12 @@ module DevFlow
 
         if /^\s*\[(?<plus_>[\+\s]+)\]\s(?<contents_>.+)/ =~ line
           if @tasks.size == 0 and head_part.size > 0
-            self.headers = YAML.load(head_part) 
+            @config = @config.merge YAML.load(head_part) 
             head_part = ""
           end
           line.chomp!
-          task = Task.new(plus_.to_s.count("+"), self.file, $.).parse(contents_, self.headers).validate!
+          task = Task.new(plus_.to_s.count("+"), self.file, $.).parse(contents_, @config)
+          task.validate! # raise for format errors
           raise "branch name #{task.branch_name} already used on #{self.file}:#{self.branch_tasks[task.branch_name].ln}" if self.branch_tasks[task.branch_name]
           if task.is_a?(Task)
             # find perant for the task:
@@ -67,53 +63,22 @@ module DevFlow
         end
       end
       fh.close
-      self.headers["title"] = first_line unless self.headers["title"]
 
       # check and set dependencies
       self.tasks.each do |task|
-        task.dependencie_ids.each do |id|
-          d_task = @branch_tasks[id]
-          raise "task #{task.branch_name} (#{task.file}:#{task.ln}) has dependency #{id} not found on the file" unless d_task
+        task.dependencie_names.each do |branch|
+          d_task = @branch_tasks[branch]
+          raise "task #{task.branch_name} (#{task.file}:#{task.ln}) has dependency #{branch} not found on the file" unless d_task
           task.dependencies << d_task
         end
       end
-
       self
-      #}}}
     end
 
     ## the last task in row that less than the given level is parent task
     def find_parent level
       self.tasks.reverse.each { |t| return t if t.level < level }
       nil
-    end
-
-    ## write out data.js for jquery.gantt plugin
-    def as_data_js file="data.js"
-      # {{{
-      wfh = File.open(file, "w:utf-8")
-      wfh.puts "var ganttData=["
-      top_id = 1
-      self.tasks.each do |task|
-        next unless task.level == 1
-        wfh.puts "  {"
-        body = sprintf('    id: %d, name: "%s (%s)", ', top_id, task.display_name, self.headers["team"][task.resource])
-        body += "series: [\n" if task.children.size > 0
-        task.children.each do |child|
-          body += sprintf('      { name: "%s (%s)", start: new Date(%s), end: new Date(%s), color: "%s" }, %s', 
-                          child.display_name, self.headers["team"][child.resource], 
-                          child.start_date.strftime("%Y,%m,%d"), child.end_date.strftime("%Y,%m,%d"),
-                          "#f0f0f0", "\n")
-        end
-
-        body += "    ]" if task.children.size > 0 
-        wfh.puts body
-        wfh.puts "  },"
-        top_id += 1
-      end
-      wfh.puts "]"
-      wfh.close
-      # }}}
     end
 
     def rewrite task_hash

@@ -3,171 +3,96 @@
 #
 # @author: Huang Wei <huangw@pe-po.com>
 # version 1.0a
-#
 
 module DevFlow
   ## Task object represent a single line on the Gantt chart
   class Task
     attr_accessor :file, :ln, # which line of file defined the task
-      :level, :branch_name, :display_name, :resources, 
+      :level, :branch_name, :display_name, :resources, :resource_names,
       :progress, :completed_at, # complete date time
-      :dependencie_ids, :start_date, :end_date,
-      :parent, # task object the represents the parent
-      :children, # array of task object represent children
-      #:is_milestone, # if represent a milestone or a release
-      #:is_pending, :is_deleted
-
+      :dependencies, # depends on those tasks (list of branch_names)
+      :dependencie_names, # denpendencies in branch names (for display)
+      :start_date, :end_date,
+      :parent, :children, # all in branch_names first
+      :is_pending, :is_deleted
+  
+    # initialize with level, file and line number
     def initialize level,file="-",ln=0
-      self.level = level.to_i
+      @level = level.to_i
       raise "invalid level #{level}" unless level.to_i > 0
-      self.file, self.ln = file, ln
-      self.children = Array.new
-      self.dependencies = Array.new
-      self.dependencie_ids = Array.new
-      self.progress = 0
-      self.resources = Array.new
-      self.resource_names = Array.new
+      @file, @ln = file, ln
+      @children = Array.new
+      @dependencies = Array.new
+      @dependencie_names = Array.new
+      @progress = 0
+      @resources = Array.new
+      @resource_names = Array.new
     end
 
-    def number_of_children; self.children.size end
-    def is_completed?; self.completed_at ? true : false end
-    def is_milestone?; self.is_milestone ? true : false end
-    def is_parent?; self.children.size > 0 ? true : false end
-
-    ## a task is completable if all children complated
-    def is_completable?
-      # {{{
-      return false if self.is_completed? 
-      self.children.each do |child|
-        return false unless child.is_completed?
-      end
-      true
-      # }}}
+    # filter methods
+    def is_milestone?
+      self.branch_name =~ /^(milestone|release)\_/ ? true : false
     end
 
-    ## a task is workable (can be started) if all children
-    # task and dependent task are completed
-    def is_workable?
-      # {{{
-      # trivial: if already completed, do not start again
-      return false if self.is_completed?
-      return false if self.is_pending or self.is_deleted
-
-      self.dependencies.each do |t|
-        return false unless t.is_completed?
-      end
-
-      self.children.each do |t|
-        return false unless t.is_completed?
-      end
-      true
-      #}}}
+    def is_completed?
+      self.completed_at ? true : false
     end
 
-    ## task_id in the roadmap
-    def task_id
-      self.ln
+    def is_pending?
+      self.is_pending ? true :false
     end
-    
-    ## color reflects the status of a task, return a hex code without heading "#"
-    def color
-      # {{{
+
+    def is_deleted?
+      self.is_deleted ? true : false
+    end
+
+    def is_parent?
+      self.children.size > 0 ? true : false
+    end
+
+    def is_urgent?  # usually orange
       today = DateTime.now.strftime("%Y%m%d").to_i 
       start_day = self.start_date.strftime("%Y%m%d").to_i 
-      end_day = self.end_date.strftime("%Y%m%d").to_i 
-      hex = "B0C4DE" # light steel blue as default 
-      hex = "808080" unless self.is_workable? # grey for no able to start
-      hex = "008000" if self.is_completed?    # green for completed
-      hex = "FFD700" if start_day == today and progress == 0 # gold for must start now
-      hex = "FFFF00" if self.progress > 0 and self.progress < 100 # blue for working
-      hex = "FFA500" if end_day == today and self.progress < 100 # orange for master complete today
-      hex = "FF0000" if self.progress < 100 and today > end_day   # red for not completed on time 
-      hex = "FF0000" if self.progress == 0 and today > start_day  # red for late start
-      hex = "EEE8AA" if self.is_deleted
-      hex = "C0C0C0" if self.is_pending
-     #  puts hex + ":" + self.progress.to_s + ";" + DateTime.now.strftime("%Y%m%d") + ":" + self.start_date.strftime("%Y%m%d")
-      hex
-      # }}}
+      end_day = self.end_date.strftime("%Y%m%d").to_i
+      
+      return true if start_day == today and progress == 0
+      return true if end_day == today and self.progress < 100
+      false
     end
 
-    def resource_name; self.resource_names.join ", " end
-    def resource; self.resources.join ", " end
-
-    ## captions for display behind the bar of the Gantt chart
-    def caption
-      # {{{
-      return "" if self.children.size > 0
-      cap = self.resource_name
-      cap = sprintf("Pending (%s)", cap) if self.is_pending
-      cap = sprintf("Deleted (%s)", cap) if self.is_deleted
-      if self.is_completed?
-        cap += self.completed_at.strftime("%F")
-      else
-        cap += sprintf(':%02d\%', self.progress) if self.progress > 0
-      end
-      cap
-      # }}}
+    def is_delayed? # usually red
+      today = DateTime.now.strftime("%Y%m%d").to_i 
+      start_day = self.start_date.strftime("%Y%m%d").to_i 
+      end_day = self.end_date.strftime("%Y%m%d").to_i
+      return true if self.progress < 100 and today > end_day
+      return true if self.progress == 0 and today > start_day
+      false
     end
 
-    ## range task title string
-    def title
-      tt = sprintf "%s (%s)", self.display_name, self.branch_name
-      tt = "<em>&lt;" + tt + "&gt;</em>" if self.is_milestone?
-      tt = "<strong>" + tt + "</strong>" if self.level == 1
-      #tt = "<span style=\"color:#666666\">(Pending)" + tt + "</span>" if self.is_pending
-      #tt = "<span style=\"text-decoration:line-through\">(Deleted)" + tt + "</span>" if self.is_deleted
-      tt
-    end
-
-    def dependencies_str
-      self.dependencies.map {|d| d.task_id}.join ","
-    end
-
-    def parent_id
-      self.parent ? self.parent.task_id : 0 
-    end
-
-    ## render task as a line in the Gantt chart JS
-    def as_js 
-      # {{{
-      is_milestone_flag = self.is_milestone ? 1 : 0
-      is_parent_flag = self.is_parent? ? 1 : 0
-      task_str = "    g.AddTaskItem(new JSGantt.TaskItem(%d,'%s','%s','%s','%s','%s',%d,'%s',%d,%d,%d,%d,'%s','%s'));\n"
-      sprintf(task_str, self.task_id, self.title, 
-              self.start_date.strftime("%m/%d/%Y"), 
-              self.end_date.strftime("%m/%d/%Y"), 
-              self.color, '', is_milestone_flag, 
-              self.resource_name, self.progress.to_i, is_parent_flag, 
-              self.parent_id, 1, self.dependencies_str, self.caption)
-      # }}}
-    end
-    
     ## check whether the task is well defined, raise error otherwise.
     def validate!
-      #{{{
-      raise "resource not found on #{self.file}:#{self.ln}" unless self.resource
+      if self.is_milestone?
+        unless self.level == 1
+          raise "you can only tag a top level task as a release, on #{self.file}:#{self.ln}" if self.branch_name =~ /^release\_/
+        end
+      end
+      raise "resource not found on #{self.file}:#{self.ln}" unless self.resources.size > 0
       raise "display_name not found on #{self.file}:#{self.ln}" unless self.display_name
       raise "valid start_date not found on #{self.file}:#{self.ln}" unless self.start_date
+      raise "wrong date on #{self.file}:#{self.ln}" unless self.start_date and self.end_date and self.start_date <= self.end_date
+
       self
-      #}}}
     end
 
     ## parse the line from file:ln (line number), initialize the
     # task object
     def parse line, headers = {}
-      # {{{
-      line.strip! # delete head/trailing spaces
+      line = line.strip # delete head/trailing spaces
 
       /^((?<branch_name_>[a-zA-Z0-9_\-\#\.\/]+):)?\s*(?<display_name_>.+)\s+(?<start_date_>(\d\d\d\d\/)?\d\d?\/\d\d?)(-(?<end_date_>(\d\d\d\d\/)?\d\d?\/\d\d?))?(\s+\@(?<resource_>[a-z\@\;]+))?(\:(?<status_>(P|D))?(?<progress_>[\d\/]+)?)?(\s+\-\>\s*(?<dependencies_>.+))?$/ =~ line
 
       # assign branch name and display name
       self.branch_name = branch_name_
-      if self.branch_name =~ /^(release|milestone)\_/
-        self.is_milestone = true
-        unless self.level == 1
-          raise "you can only tag a top level task as a release, on #{self.file}:#{self.ln}" if self.branch_name =~ /^release\_/
-        end
-      end
 
       self.display_name = display_name_
 
@@ -179,10 +104,13 @@ module DevFlow
         end_date_ = headers["year"].to_s + "/" + end_date_ unless end_date_ =~ /^\d\d\d\d/
       end
 
-      self.start_date = DateTime.parse(start_date_)
-      self.end_date = DateTime.parse(end_date_)
-      raise "wrong date on #{self.file}:#{self.ln}" unless self.start_date and self.end_date and self.start_date <= self.end_date
-
+      begin
+        self.start_date = DateTime.parse(start_date_)
+        self.end_date = DateTime.parse(end_date_)
+      rescue Exception => e
+        raise "invalid date on #{self.file}:#{self.ln}"  
+      end
+      
       # assign for the resources (user name)
       unless resource_
         if headers["leader"]
@@ -192,16 +120,21 @@ module DevFlow
         end
       end
 
-      resource_.gsub!("\@", "")
+      resource_.gsub!("\@", "") # @ for other user is optional
       resource_.split(";").each do |r|
         self.resources << r
-        self.resource_names << r
+        # if the user is listed on known members
+        rname = r
+        if headers["members"] and headers["members"][r] and headers["members"][r][0]
+          rname = headers["members"][r][0]
+        end
+        self.resource_names << rname
       end
 
       if dependencies_
         dependencies_.strip!
         dependencies_.gsub!(/;$/, "")
-        self.dependencie_ids = dependencies_.split(/;/)
+        self.dependencie_names = dependencies_.split(/;/)
       end
 
       # pending or deleted status
@@ -231,7 +164,7 @@ module DevFlow
       end
 
       self
-      #}}}
     end
-  end # end class Task
+
+  end # class Task
 end
