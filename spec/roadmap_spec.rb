@@ -12,14 +12,16 @@ describe DevFlow::RoadMap do
       end
 
       it "should assign parents well" do
-        roadmap.ln_tasks[23].parent.is_a?(DevFlow::Task)
-        roadmap.ln_tasks[23].parent.branch_name.should eq("scope")
+        roadmap.ln_tasks[28].parent.is_a?(DevFlow::Task)
+        roadmap.ln_tasks[28].level.should eq(2)
+        roadmap.ln_tasks[28].parent.branch_name.should eq("scope")
+        roadmap.ln_tasks[28].parent.level.should eq(1)
       end
 
       it "should assign dependencies well" do
-        roadmap.ln_tasks[64].dependencies.size.should eq(2)
-        roadmap.ln_tasks[64].dependencies[0].branch_name.should eq("release_api_design_0.1")
-        roadmap.ln_tasks[64].dependencies[1].branch_name.should eq("model_spec")
+        roadmap.ln_tasks[70].dependencies.size.should eq(2)
+        roadmap.ln_tasks[70].dependencies[0].branch_name.should eq("release_api_design_0.1")
+        roadmap.ln_tasks[70].dependencies[1].branch_name.should eq("model_spec")
       end
     end
   end

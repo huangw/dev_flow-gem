@@ -1,7 +1,6 @@
 require 'yaml'
 require 'logger'
 require 'fileutils'
-class String; include Term::ANSIColor end
 
 # model layer
 require 'dev_flow/task'
