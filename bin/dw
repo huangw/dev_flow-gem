@@ -68,8 +68,8 @@ end
 unless command == 'init'
   unless File.exists? (options[:local_config])
     puts "Initializing your environment ... "
-    DevFlow::Init.new(options, command).process!
+    DevFlow.invoke!(options, 'init')
   end
 end
 
-DevFlow.command(command.to_sym).process!
+DevFlow.invoke!(options, command)
