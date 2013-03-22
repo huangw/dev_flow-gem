@@ -41,7 +41,7 @@ module DevFlow
         if /^\s*\[(?<plus_>[\+\s]+)\]\s(?<contents_>.+)/ =~ line
           if @tasks.size == 0 and head_part.size > 0
             hhash = YAML.load(head_part) 
-            members =  @config["members"]
+            members =  @config["members"] || {}
             members.merge!(hhash["members"])
             @config = @config.merge hhash
             @config["members"] = members

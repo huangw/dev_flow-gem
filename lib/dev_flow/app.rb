@@ -32,6 +32,9 @@ module DevFlow
       @logger.formatter = proc { |severity, datetime, progname, msg|
         "#{msg.to_s}\n"
       }
+
+      # you can swith to those tasks (number/task):
+      @waiting = Hash.new
     end
 
     def all_member_names
@@ -45,6 +48,17 @@ module DevFlow
       else
         wi
       end
+    end
+
+    def task
+      @roadmap.tasks.each do |task|
+        return task if task.branch_name == @girc.current_branch
+      end
+      nil
+    end
+
+    def in_trunk?
+      %w[master develop staging mock test production release stable].include? @girc.current_branch
     end
 
     def i_am_leader
@@ -78,6 +92,7 @@ module DevFlow
       puts "This is the DevFlow console, version: " + VERSION
       puts hr
       puts "You are on branch #{@girc.current_branch.bold.green}"
+      puts "The task is: #{self.task.display_name.bold}" if self.task
       puts "You are the #{'leader'.bold} of the project." if self.i_am_leader
       puts "You are the #{'moderator'.bold} of the project." if self.i_am_moderator
       puts "You are the #{'supervisor'.bold} of the project." if self.i_am_supervisor
@@ -86,13 +101,16 @@ module DevFlow
     def display_close_waiting
       return false unless self.need_to_close.size > 0
       puts hr
-      puts "There have "
+      puts "There have tasks marked 99% progress and need to be reviewed:"
       i = 0
       self.need_to_close.each do |task|
         i += 1
-        forme = ' '
-        forme = '*'.bold.blue if task.resources.include? @config["whoami"]
-        puts "[#{i.to_s.bold}]#{forme} " + task.as_title
+        if @girc.wd_clean?
+          puts "[#{i.to_s.bold}] " + task.as_title
+          @waiting[i] = task
+        else
+          puts "[ ] " + task.as_title
+        end
       end
     end
 
@@ -117,6 +135,7 @@ module DevFlow
           j += 1
           header = j.to_s.bold
           header = ' ' unless @girc.wd_clean? 
+          @waiting[j] = task if @girc.wd_clean? 
         end
         
         puts task.as_title(header) + forme

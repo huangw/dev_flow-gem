@@ -34,6 +34,10 @@ module DevFlow
       self.branch_name =~ /^(milestone|release)\_/ ? true : false
     end
 
+    def is_release?
+      self.branch_name =~ /^release\_/ ? true : false
+    end
+
     def is_completed?
       self.progress == 100
     end
