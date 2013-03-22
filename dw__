@@ -1,0 +1,73 @@
+#!/usr/bin/env ruby
+# vim: syn=ruby
+
+$: << 'lib'
+
+require "optparse"
+require "dev_flow"
+
+options = {}
+
+optparse = OptionParser.new do |opts|
+  opts.banner = "Usage: dw [options] [command]"
+
+  options[:roadmap] = 'ROADMAP' # the roadmap file
+  opts.on('-r ROADMAP_FILE', '--roadmap ROADMAP_FILE', 'use an other roadmap file') do |roadmap|
+    options[:roadmap] = roadmap
+  end
+
+  options[:local_config] = '.dev_flow'
+  opts.on('-l LOCAL_CONFIG', '--local-config LOCAL_CONFIG', 'use an other local configuration file') do |lc|
+    options[:local_config] = lc
+  end
+
+  options[:members_file] = 'members.yml'
+  opts.on('-m MEMBERS_FILE', '--members_file MEMBERS_FILE', 'use an other members file') do |mf|
+    options[:members_file] = mf
+    raise "the specified members file #{mf} is not exists." unless File.exists? mf
+  end
+
+  opts.on('-o', '--offline', 'do not use remote git server') do 
+    options[:offline] = true
+  end
+
+  opts.on('-v', '--verbose', 'print more messages') do
+    options[:verbose] = true
+  end
+
+  # TODO filter tasks
+
+  opts.on_tail('-h', '--help', 'Display this screen') do
+    puts opts
+    exit
+  end
+end
+
+optparse.parse!(ARGV)
+
+# determine the command
+command = ARGV[0] || 'info'
+cmd_alias = {s:'start', p:'progress', pg:'progress'}
+command = cmd_alias[command.to_sym] if cmd_alias[command.to_sym]
+
+if %w[info start init complete progress close release roadmap].include? command
+  options[:command] = command
+else
+  raise "unknown command #{command}"
+end
+
+# switch to init mode unless .dev_flow file exists
+unless File.exists? (options[:local_config])
+  puts "Initializing your environment ... "
+  command = "init"
+end
+
+case command
+when 'init'
+  DevFlow::Init.new(options, command).process!
+when 'info'
+  DevFlow::Info.new(options, command).process!
+else
+  puts "unknown command #{command}"
+end
+

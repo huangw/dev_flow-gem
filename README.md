@@ -177,5 +177,5 @@ branch (to master trunk).
 
 - `dw update-roadmap` or `dw ur` update the roadmap.
 
-- `dw clean` will delete local branches corresponding completed tasks.
+- `dw cleanup` will delete local branches corresponding completed tasks.
 

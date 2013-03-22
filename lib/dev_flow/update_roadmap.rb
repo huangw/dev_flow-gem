@@ -1,5 +1,5 @@
 module DevFlow
-  class Progress < App
+  class UpdateRoadmap < App
 
     def process!
       

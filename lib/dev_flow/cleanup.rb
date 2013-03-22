@@ -1,5 +1,5 @@
 module DevFlow
-  class Progress < App
+  class Cleanup < App
 
     def process!
       
