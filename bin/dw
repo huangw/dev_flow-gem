@@ -4,6 +4,7 @@
 $: << 'lib'
 
 require "optparse"
+require "term/ansicolor"
 require "dev_flow"
 
 options = {}
@@ -27,6 +28,10 @@ optparse = OptionParser.new do |opts|
     raise "the specified members file #{mf} is not exists." unless File.exists? mf
   end
 
+  opts.on('-i', '--filter-tasks', 'show only tasks assigned to me') do
+    options[:filter_tasks] = true
+  end
+
   opts.on('-o', '--offline', 'do not use remote git server') do 
     options[:offline] = true
   end
@@ -34,8 +39,6 @@ optparse = OptionParser.new do |opts|
   opts.on('-v', '--verbose', 'print more messages') do
     options[:verbose] = true
   end
-
-  # TODO filter tasks
 
   opts.on_tail('-h', '--help', 'Display this screen') do
     puts opts
@@ -47,27 +50,26 @@ optparse.parse!(ARGV)
 
 # determine the command
 command = ARGV[0] || 'info'
-cmd_alias = {s:'start', p:'progress', pg:'progress'}
+cmd_alias = {pg:'progress', ur:'update-roadmap'}
 command = cmd_alias[command.to_sym] if cmd_alias[command.to_sym]
 
-if %w[info start init complete progress close release roadmap].include? command
+if %w[info init complete progress close release update-roadmap].include? command
   options[:command] = command
 else
   raise "unknown command #{command}"
 end
 
+unless File.exists? (options[:roadmap])
+  puts "No roadmap file (#{options[:roadmap]}) found, can not continue.".red
+  exit
+end
+
 # switch to init mode unless .dev_flow file exists
-unless File.exists? (options[:local_config])
-  puts "Initializing your environment ... "
-  command = "init"
+unless command == 'init'
+  unless File.exists? (options[:local_config])
+    puts "Initializing your environment ... "
+    DevFlow::Init.new(options, command).process!
+  end
 end
 
-case command
-when 'init'
-  DevFlow::Init.new(options, command).process!
-when 'info'
-  DevFlow::Info.new(options, command).process!
-else
-  puts "unknown command #{command}"
-end
-
+DevFlow.command(command.to_sym).process!

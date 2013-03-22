@@ -1,4 +1,3 @@
-require 'term/ansicolor'
 require 'fileutils'
 
 # model layer
