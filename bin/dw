@@ -50,8 +50,8 @@ optparse.parse!(ARGV)
 
 # determine the command
 command = ARGV[0] || 'info'
-cmd_alias = {pg:'progress', ur:'update-roadmap'}
-command = cmd_alias[command.to_sym] if cmd_alias[command.to_sym]
+cmd_alias = {'pg' => 'progress', 'update-roadmap' => 'ur'}
+command = cmd_alias[command] if cmd_alias[command]
 
 if %w[info init complete progress close release update-roadmap].include? command
   options[:command] = command
