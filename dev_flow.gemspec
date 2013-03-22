@@ -2,8 +2,8 @@ $LOAD_PATH.unshift File.expand_path('../lib', __FILE__)
 require 'dev_flow/version'
 
 Gem::Specification.new 'dev_flow', DevFlow::VERSION do |s|
-  s.description       = "dev_flow is a bundle of helper tools for ROADMAP/git based development flow control."
-  s.summary           = "a bundle of helper tools for ROADMAP/git based development flow control."
+  s.description       = "dev_flow is a bundle of tools for ROADMAP/git based development flow control."
+  s.summary           = "a bundle of tools for ROADMAP/git based development flow control."
   s.authors           = ["Huang Wei"]
   s.email             = "huangw@pe-po.com"
   s.homepage          = "https://github.com/huangw/dev_flow-gem"
@@ -13,7 +13,6 @@ Gem::Specification.new 'dev_flow', DevFlow::VERSION do |s|
   s.rdoc_options      = %w[--line-numbers --inline-source --title DevFlow --main README.rdoc --encoding=UTF-8]
 
   s.add_dependency 'term-ansicolor'    # for colorful command line display
-  s.add_dependency 'girc'              # hand-made git command console
   s.add_development_dependency 'rspec', '~> 2.5'
 end
 
