@@ -76,6 +76,10 @@ module DevFlow
       @members[wi] ? @members[wi].display_name : wi
     end
 
+    def leader_name
+      @members[@config["leader"]].display_name
+    end
+
     def task
       @roadmap.tasks.each do |task|
         return task if task.branch_name == @git.current_branch
@@ -88,7 +92,7 @@ module DevFlow
     end
 
     def in_release?
-      task.is_release?
+      task and task.is_release?
     end
 
     def i_am_leader?

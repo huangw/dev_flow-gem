@@ -56,13 +56,16 @@ module DevFlow
       else
         display_tasks
       end
+      puts hrh
 
       if @git.wd_clean? 
         # if work directory is clean, ready to switch
         if i_am_leader? and in_release? # concentrate
           puts "You are in a release branch, please release it as soon as possible."
         else # otherwise show switch options
-          puts "You switch to other branches (type 0 to switch to develop trunk):"
+          puts "You switch to other branches:"
+          puts "Type #{0.to_s.bold} to switch to develop trunk."
+          puts "Simply press enter to keep working on the current branch."
           print @waiting.keys.join(", ") + ":"
 
           ans = STDIN.gets.chomp!
@@ -73,8 +76,25 @@ module DevFlow
           end
         end
       else # if the wd is not clean
-        # if in a task not assigned to you, warn
-        # if you are not the leader and in release or completed branch, warn
+        
+        if (not i_am_leader?) and current_task and in_release?
+          puts "WARN: You are on a release branch, only leader can edit release branches.".yellow
+          puts "Please undo you edit. Do not push your edition to the remote server."
+          exit
+        end
+
+        if (not i_am_leader?) and current_task and current_task.progress == 99
+          puts "WARN: You are on a completed branch, call the leader (#{leader_name.bold}) to close it.".yellow
+          exit
+        end
+        
+        if current_task
+          unless current_task.resources.include? @config["whoami"]
+            puts "WARN: You are editing a task not assigned to you.".yellow
+            puts hr
+          end
+        end
+        
         # if assigned to you prompt for pg or close or release
       end
       hrb
