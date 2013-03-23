@@ -3,7 +3,7 @@ require 'logger'
 class String; include Term::ANSIColor end
 
 module DevFlow
-  attr_accessor :config, :roadmap, :logger, :command, :girc
+  attr_accessor :config, :roadmap, :logger, :command, :git
   class App
     def initialize config, command
       @config, @command = config, command
@@ -25,7 +25,7 @@ module DevFlow
         raise "no roadmap file found!"
       end
 
-      @girc = Girc::Console.new 'git', @config[:verbose]
+      @git = Girc::Console.new 'git', @config[:verbose]
 
       @logger = Logger.new(STDOUT)
       @logger.level = Logger::WARN
@@ -52,13 +52,13 @@ module DevFlow
 
     def task
       @roadmap.tasks.each do |task|
-        return task if task.branch_name == @girc.current_branch
+        return task if task.branch_name == @git.current_branch
       end
       nil
     end
 
     def in_trunk?
-      %w[master develop staging mock test production release stable].include? @girc.current_branch
+      %w[master develop staging mock test production release stable].include? @git.current_branch
     end
 
     def i_am_leader
@@ -91,7 +91,7 @@ module DevFlow
       puts "Hello, #{user.bold}."
       puts "This is the DevFlow console, version: " + VERSION
       puts hr
-      puts "You are on branch #{@girc.current_branch.bold.green}"
+      puts "You are on branch #{@git.current_branch.bold.green}"
       puts "The task is: #{self.task.display_name.bold}" if self.task
       puts "You are the #{'leader'.bold} of the project." if self.i_am_leader
       puts "You are the #{'moderator'.bold} of the project." if self.i_am_moderator
@@ -105,7 +105,7 @@ module DevFlow
       i = 0
       self.need_to_close.each do |task|
         i += 1
-        if @girc.wd_clean?
+        if @git.wd_clean?
           puts "[#{i.to_s.bold}] " + task.as_title
           @waiting[i] = task
         else
@@ -134,8 +134,8 @@ module DevFlow
         unless header
           j += 1
           header = j.to_s.bold
-          header = ' ' unless @girc.wd_clean? 
-          @waiting[j] = task if @girc.wd_clean? 
+          header = ' ' unless @git.wd_clean? 
+          @waiting[j] = task if @git.wd_clean? 
         end
         
         puts task.as_title(header) + forme
@@ -153,7 +153,7 @@ module DevFlow
 
       # do the rebase:
       puts "rebase you working directory from #{@config["git_remote"]}/devleop"
-      @girc.rebase @config["git_remote"], 'develop'
+      @git.rebase @config["git_remote"], 'develop'
     end
 
   end # class

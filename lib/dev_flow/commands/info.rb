@@ -50,23 +50,34 @@ module DevFlow
       puts hr
       current_task = self.task
 
-      # if the wd is not clean
-      # if in a task not assigned to you, warn
-      # if assigned to you prompt for pg or close or release
-
+      # if i am the leader and there are closed branches, warn:
+      if i_am_leader? and tasks_for_close.size > 0
+        display_close_waiting
+      else
+        display_tasks
+      end
 
       if @git.wd_clean? 
         # if work directory is clean, ready to switch
-      
-      else
+        if i_am_leader? and in_release? # concentrate
+          puts "You are in a release branch, please release it as soon as possible."
+        else # otherwise show switch options
+          puts "You switch to other branches (type 0 to switch to develop trunk):"
+          print @waiting.keys.join(", ") + ":"
 
+          ans = STDIN.gets.chomp!
+          if ans.to_i == 0
+            switch_to! 'develop'
+          else
+            switch_to! @waiting[ans.to_i].branch_name
+          end
+        end
+      else # if the wd is not clean
+        # if in a task not assigned to you, warn
+        # if you are not the leader and in release or completed branch, warn
+        # if assigned to you prompt for pg or close or release
       end
-
-      
-      # if i am the leader and am in a release branch, concentrate
-      # if i am the leader and there are closed branches, ask
-      # otherwise show switch options
-
+      hrb
     end
 
   end # class
