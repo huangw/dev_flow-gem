@@ -20,6 +20,9 @@ require 'dev_flow/version'
 #require 'dev_flow/cleanup'
 #require 'dev_flow/update_roadmap'
 
+# other helper and libraries
+require 'dev_flow/girc'
+
 module DevFlow
   def self.invoke! config, command
     require "dev_flow/commands/#{command}"

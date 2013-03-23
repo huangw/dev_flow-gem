@@ -11,17 +11,25 @@ module DevFlow
       @logger.level = config[:verbose] ? Logger::INFO : Logger::WARN
       @logger.formatter = proc {|severity, datetime, progname, msg| "#{msg.to_s}\n"}
 
+      # initialize git console
+      @git = DevFlow::Girc.new
+
       # load configurations
       if @config[:members_file] and File.exists? (@config[:members_file])
-        @config = @config.merge(YAML.load(File.open(@config[:members_file], 'r:utf-8').read)) 
+        info "Load member information form #{@config[:members_file]}"
+        @config = @config.merge(YAML.load(File.open(@config[:members_file], 'r:utf-8').read))
+      else
+        warn "No member file to load"
       end
 
       if @config[:local_config] and File.exists? (@config[:local_config])
+        info "Load local configuration from #{@config[:local_config]}"
         @config = @config.merge(YAML.load(File.open(@config[:local_config], 'r:utf-8').read)) 
       end
       
       # load roadmap, reload config 
       if @config[:roadmap] and File.exists? (@config[:roadmap])
+        info "Load roadmap from #{@config[:roadmap]}"
         @roadmap = RoadMap.new(@config[:roadmap], @config).parse 
         @config = @roadmap.config
 
@@ -33,6 +41,7 @@ module DevFlow
       @config["members"].each do |name, ary|
         @members[name] = Member.new(name, *ary)
       end
+      error "No known members defined!" unless all_member_names.size > 0
 
       # suggest user to take those tasks
       @sugguests = Hash.new
