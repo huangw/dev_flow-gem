@@ -58,6 +58,7 @@ module DevFlow
           return line.gsub('* ', '')
         end
       end
+      nil
     end
 
     def remote_list
@@ -76,6 +77,11 @@ module DevFlow
         clean = false if /Changes/.match line
       end
       clean
+    end
+
+    # whether the current directory is a git working directory
+    def in_git_dir?
+      `#{@git} status` =~ /fatal/ ? false : true
     end
 
     # modifications
@@ -124,7 +130,7 @@ module DevFlow
     # remote from a specified remote ref
     def rebase! remote = 'origin', branch = 'develop'
       cb = self.current_branch
-      self.stash
+      self.stash!
 
       if branch == self.current_branch
         info "Rebase pull from remote"
@@ -144,7 +150,7 @@ module DevFlow
         raise "Rebase with #{branch} failed: #{rslt}" unless $?.success?
       end
 
-      self.stash_pop
+      self.stash_pop!
     end
 
   end
