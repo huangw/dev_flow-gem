@@ -188,7 +188,7 @@ module DevFlow
     end
 
     # switch to other branch
-    def switch_to branch
+    def switch_to! branch
       if @git.branches.include? branch
         `git checkout #{branch}`
       else
