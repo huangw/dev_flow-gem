@@ -1,7 +1,7 @@
 module DevFlow
   class Task
 
-    def as_title header
+    def as_title header = ' '
       name = self.display_name
       name = self.display_name.bold if self.is_workable?
       name = self.display_name.blue if self.progress > 0
