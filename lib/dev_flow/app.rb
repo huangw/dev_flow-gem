@@ -207,7 +207,7 @@ module DevFlow
       end
     end
 
-    def upload_progress! task, progress, is_complete
+    def upload_progress! task, progress, is_complete = false
       current_branch = @git.current_branch
 
       switch_to! 'develop' unless current_branch == 'develop'
