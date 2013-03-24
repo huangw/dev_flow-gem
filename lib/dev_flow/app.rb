@@ -180,11 +180,14 @@ module DevFlow
 
     # interactive methods with git remote server
     # ------------------------------------------------------
-    def ask_rebase
+    def ask_rebase force = false
       return false if @config[:offline]
-      print "Rebase your wokring directory? [Y/n]:".bold.yellow
-      ans = STDIN.gets.chomp!
-      return false if ans == 'n'
+
+      unless force
+        print "Rebase your wokring directory? [Y/n]:".bold.yellow
+        ans = STDIN.gets.chomp!
+        return false if ans == 'n'
+      end
 
       # do the rebase:
       puts "rebase you working directory from #{@config["git_remote"]}/devleop"
@@ -194,10 +197,28 @@ module DevFlow
     # switch to other branch
     def switch_to! branch
       if @git.branches.include? branch
+        info "Switch to branch #{branch}"
         `git checkout #{branch}`
       else
+        info "Switch to new branch #{branch}"
         `git chekctout -b #{branch}`
       end
+    end
+
+    def upload_progress! task, progress, is_complete
+      current_branch = @git.current_branch
+
+      switch_to! 'develop' unless current_branch == 'develop'
+      
+      info "Rewrite #{@config[:roadmap]} file"
+      @roadmap.rewrite! task.ln, progress
+
+      info "Set progress of #{task.display_name} to #{progress}"
+      `git commit -am 'update progress of task #{task.branch_name} to #{progress}'`
+      `git push #{@config[:git_remote]} develop` if @config[:git_remote]
+
+      # if this is a complete update, do not switch back
+      switch_to! current_branch unless (is_complete or current_branch == 'develop')
     end
 
   end # class
