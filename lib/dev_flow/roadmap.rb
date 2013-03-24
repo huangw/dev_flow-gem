@@ -91,6 +91,9 @@ module DevFlow
         raise "invalid progress #{progress}" unless progress.to_s =~ /^\d+$/ and progress > 0 and progress <= 100
       end
 
+      puts "rewrite line #{ln.to_s} to progress #{progress.to_s}"
+      p task_hash
+
       file = self.file
       tmp_file = self.file + ".tmp"
 
