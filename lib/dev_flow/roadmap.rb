@@ -106,7 +106,7 @@ module DevFlow
 
           if progress == 100
             com_date = DateTime.now.strftime("%Y/%m/%d")
-            com_date = DateTime.now.strftime("%m/%d") if DateTime.now.year == self.headers["year"]
+            com_date = DateTime.now.strftime("%m/%d") if DateTime.now.year == @config["year"]
             progress = com_date
           end
           
