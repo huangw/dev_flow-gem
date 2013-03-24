@@ -45,10 +45,11 @@ module DevFlow
 
     def process!
       self.hello
-      self.ask_rebase
+
+      current_task = self.task
+      self.ask_rebase if current_task or in_trunk?
 
       puts hr
-      current_task = self.task
 
       # if i am the leader and there are closed branches, warn:
       if i_am_leader? and tasks_for_close.size > 0
@@ -77,25 +78,60 @@ module DevFlow
         end
       else # if the wd is not clean
         
-        if (not i_am_leader?) and current_task and in_release?
-          puts "WARN: You are on a release branch, only leader can edit release branches.".yellow
-          puts "Please undo you edit. Do not push your edition to the remote server."
+        if current_task and in_release?
+          if i_am_leader?
+            puts "You are in a release branch, if you are ready to release it, use:"
+            puts "  $ dw release".bold.blue
+          else
+            puts "WARN: You are on a release branch, only leader can edit release branches.".yellow
+            puts "Please undo you edit. Do not push your edition to the remote server."
+          end
           exit
         end
 
-        if (not i_am_leader?) and current_task and current_task.progress == 99
-          puts "WARN: You are on a completed branch, call the leader (#{leader_name.bold}) to close it.".yellow
+        if current_task and current_task.progress == 99
+          if i_am_leader
+            puts "You are in a branch marked complete. Please test and review the code, and close it by:"
+            puts "  $ dw close".bold.blue
+            puts "Or reject the branch by issue:"
+            puts "  $ dw progress 60".bold.blue
+          else
+            puts "WARN: You are on a completed branch, call the leader (#{leader_name.bold}) to close it.".yellow
+          end
           exit
         end
         
         if current_task
           unless current_task.resources.include? @config["whoami"]
             puts "WARN: You are editing a task not assigned to you.".yellow
-            puts hr
+          end
+
+          puts "You are encouraged to push your progress often by:"
+          puts "  $ dw progress 40 'git commit message'".bold.blue
+          puts "Or use the short version:"
+          puts "  $ dw pg 40 'git commit message'".bold.blue
+          puts "If you fully implemented and tested the code, issue:"
+          puts "  $ dw complete"
+          puts "Then #{'do not forget'.bold.red} inform the leader (#{leader_name.bold})."
+        else
+          puts "You are not on any non-branches. You may commit all you changes and"
+          puts "switch to develop trunk before the next move:"
+          puts "  $ git commit -am 'git commit message'".bold.blue
+          puts "  $ git checkout develop".bold.blue
+        end
+
+        if in_trunk?
+          if @git.current_branch == 'develop' and i_have_power?
+            puts "You should only edit ROADMAP files on develop trunk, when you done, use:"
+            puts "  $ dw update-roadmap".bold.blue
+            puts "Or use the short version:"
+            puts "  $ dw ur".bold.blue
+          else
+            warn "Avoid directly edit files under trunk branches."
+            puts "Please undo you change and switch to work on a task branch."
           end
         end
         
-        # if assigned to you prompt for pg or close or release
       end
       hrb
     end
