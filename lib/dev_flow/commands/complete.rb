@@ -7,7 +7,7 @@ module DevFlow
       # whether I am working on a proper task branch
       current_task = self.task
       error "Not on a known task branch. Can not continue." unless current_task
-      
+
       unless current_task.resources.include?(@config[:whoami]) 
         if i_have_power?
           role = 'supervisor' if i_am_supervisor?
@@ -27,7 +27,7 @@ module DevFlow
       message = ARGV[2] || "complete your branch by set progress to 99."
       message = "[complete] " + message
 
-      info "commit your progress"
+      info "Commit your progress"
       `git commit -am '#{message}'`
       if @config[:git_remote]
         info "push your progress to remote server"
@@ -36,6 +36,7 @@ module DevFlow
       
       # rewrite progress in ROADMAP file under develop trunk
       upload_progress! current_task, progress, true
+
     end
 
   end # class

@@ -18,7 +18,7 @@ module DevFlow
         error "invalid progress. Use percentage between 1 to 98."
       end
       message = ARGV[2] || "update progress to #{progress}"
-      message = "[PROGRESS] " + message
+      message = "[progress] " + message
 
       info "commit your progress"
       `git commit -am '#{message}'`

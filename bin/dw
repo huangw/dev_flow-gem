@@ -73,4 +73,9 @@ unless command == 'init'
   end
 end
 
+if command == 'release'
+  options[:release] == true
+  command = 'complete'
+end
+
 DevFlow.invoke!(options, command)
