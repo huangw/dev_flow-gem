@@ -118,7 +118,6 @@ module DevFlow
           else
             new_line += '@' + self.headers["leader"] + ":" + progress.to_s
           end
-puts new_line
           wfh.puts new_line
         else
           wfh.puts line
