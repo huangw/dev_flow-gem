@@ -44,7 +44,9 @@ module DevFlow
       end
       error "No known members defined!" unless all_member_names.size > 0
 
-      error "You (#{user_name}) are not in the known member list. You may use 'dw init' to setup the working environment." unless all_member_names.include? @config["whoami"]
+      if @config["whoami"]
+        error "You (#{user_name}) are not in the known member list. You may use 'dw init' to setup the working environment." unless all_member_names.include? @config["whoami"]
+      end
 
       # suggest user to take those tasks
       @waiting = Hash.new
@@ -127,7 +129,7 @@ module DevFlow
       puts "Hello, #{user_name.bold}."
       puts "This is the DevFlow console, version: " + VERSION
       puts hrh
-      puts "You are on branch #{@git.current_branch.bold.green}"
+      puts "You are on branch #{@git.current_branch.bold.green}" if @git.current_branch
       puts "You task is: #{self.task.display_name.bold}" if self.task
       puts "You are the #{'leader'.bold} of the project." if self.i_am_leader?
       puts "You are the #{'moderator'.bold} of the project." if self.i_am_moderator?
@@ -201,7 +203,7 @@ module DevFlow
         `git checkout #{branch}`
       else
         info "Switch to new branch #{branch}"
-        `git chekctout -b #{branch}`
+        `git checkout -b #{branch}`
       end
     end
 

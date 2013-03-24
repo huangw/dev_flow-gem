@@ -76,7 +76,7 @@ module DevFlow
             switch_to! @waiting[ans.to_i].branch_name
 
             # if the task not started yet, update progress
-            update_progress! @waiting[ans.to_i], 10
+            upload_progress! @waiting[ans.to_i], 10
           end
         end
       else # if the wd is not clean

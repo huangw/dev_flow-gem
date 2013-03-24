@@ -6,7 +6,7 @@ module DevFlow
       name = self.display_name.bold if self.is_workable?
       name = self.display_name.blue if self.progress > 0
       name = self.display_name.green if self.is_completed?
-      name = self.display_name.orange if self.is_urgent?
+      name = self.display_name.magenta if self.is_urgent?
       name = self.display_name.red if self.is_delayed?
 
       if self.progress > 0 and self.progress < 100

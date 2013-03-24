@@ -4,7 +4,7 @@ module DevFlow
     def process!
       local_configuration = {}
       if File.exists? @config[:local_config]
-        local_configuration = YAML.load(File.open(@config["local_config"], 'r:utf-8').read) || {}
+        local_configuration = YAML.load(File.open(@config[:local_config], 'r:utf-8').read) || {}
       end
 
       # find the current user
