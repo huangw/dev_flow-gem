@@ -220,7 +220,10 @@ module DevFlow
       `git push #{@config[:git_remote]} develop` if @config[:git_remote]
 
       # if this is a complete update, do not switch back
-      switch_to! current_branch unless (is_complete or current_branch == 'develop')
+      unless (is_complete or current_branch == 'develop')
+        switch_to! current_branch
+        `git merge develop`
+      end
     end
 
   end # class
