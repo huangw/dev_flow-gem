@@ -128,7 +128,6 @@ puts new_line
       wfh.close
 
       FileUtils.rm tmp_file
-      raise ""
     end
   end
 end
