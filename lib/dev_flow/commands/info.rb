@@ -64,15 +64,15 @@ module DevFlow
         if i_am_leader? and in_release? # concentrate
           puts "You are in a release branch, please release it as soon as possible."
         else # otherwise show switch options
-          puts "You switch to other branches:"
+          puts "You switch to other branches:".bold.yellow
           puts "Type #{0.to_s.bold} to switch to develop trunk."
           puts "Simply press enter to keep working on the current branch."
           print @waiting.keys.join(", ") + ":"
 
           ans = STDIN.gets.chomp!
-          if ans.to_i == 0
+          if ans == 0.to_s
             switch_to! 'develop'
-          else
+          elsif @waiting[ans.to_i]
             switch_to! @waiting[ans.to_i].branch_name
           end
         end
