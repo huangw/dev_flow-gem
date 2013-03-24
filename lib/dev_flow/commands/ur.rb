@@ -4,7 +4,7 @@ module DevFlow
     def process!
       error "Not on develop trunk" unless @git.current_branch == 'develop'
       error "Only leader/moderator and supervisor can edit ROADMAP" unless i_have_power?
-      p @git.modified_files
+      #p @git.modified_files
       error "No change detected on #{@config[:roadmap]}" unless @git.modified_files.include? File.expand_path(@config[:roadmap])
 
       `git add .`
