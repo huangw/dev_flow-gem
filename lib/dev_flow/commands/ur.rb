@@ -1,5 +1,5 @@
 module DevFlow
-  class UpdateRoadmap < App
+  class Ur < App
 
     def process!
       error "Not on develop trunk" unless @git.current_branch == 'develop'
