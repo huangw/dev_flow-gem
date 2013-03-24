@@ -144,10 +144,10 @@ module DevFlow
       self.tasks_for_close.each do |task|
         i += 1
         if @git.wd_clean?
-          puts "[#{i.to_s.bold}] " + task.as_title
+          puts task.as_title i.to_s
           @waiting[i] = task
         else
-          puts "[ ] " + task.as_title
+          puts task.as_title " "
         end
       end
     end
