@@ -213,7 +213,7 @@ module DevFlow
       switch_to! 'develop' unless current_branch == 'develop'
       
       info "Rewrite #{@config[:roadmap]} file"
-      @roadmap.rewrite! task.ln, progress
+      @roadmap.rewrite! task.ln => progress
 
       info "Set progress of #{task.display_name} to #{progress}"
       `git commit -am 'update progress of task #{task.branch_name} to #{progress}'`
