@@ -84,7 +84,7 @@ module DevFlow
       nil
     end
 
-    def rewrite task_hash
+    def rewrite! task_hash
       # task_hash: {task_line_as_integer => progress_as_integer}
       task_hash.each do |ln, progress|
         raise "invalid line number #{ln}" unless ln.to_s =~ /^\d+$/ and ln > 0
