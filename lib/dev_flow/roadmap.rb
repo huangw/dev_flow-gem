@@ -89,9 +89,9 @@ module DevFlow
       task_hash.each do |ln, progress|
         raise "invalid line number #{ln}" unless ln.to_s =~ /^\d+$/ and ln > 0
         raise "invalid progress #{progress}" unless progress.to_s =~ /^\d+$/ and progress > 0 and progress <= 100
+        puts "rewrite line #{ln.to_s} to progress #{progress.to_s}"
       end
-
-      puts "rewrite line #{ln.to_s} to progress #{progress.to_s}"
+    
       p task_hash
 
       file = self.file
