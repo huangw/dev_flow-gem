@@ -11,9 +11,9 @@ module DevFlow
       error "Not on a known task branch. Can not continue." unless current_task      
 
       if in_release?
-        error "Use command 'release' to close a release branch." unless options[:release]
+        error "Use command 'release' to close a release branch." unless @config[:release]
       else
-        error "Use command 'close' to close a non-release branch." if options[:release]
+        error "Use command 'close' to close a non-release branch." if @config[:release]
       end
 
       self.ask_rebase true # force rebase
@@ -40,7 +40,7 @@ module DevFlow
       upload_progress! current_task, progress, true
       
       # merge into the master
-      if options[:release]
+      if @config[:release]
         info "Merge the release branch into master trunk"
         `git checkout master`
         `git merge --no-ff develop`
