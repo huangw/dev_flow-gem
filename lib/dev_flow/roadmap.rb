@@ -42,7 +42,7 @@ module DevFlow
           if @tasks.size == 0 and head_part.size > 0
             hhash = YAML.load(head_part) 
             members =  @config["members"] || {}
-            members.merge!(hhash["members"])
+            members.merge!(hhash["members"]) if hhash["members"]
             @config = @config.merge hhash
             @config["members"] = members
           end
