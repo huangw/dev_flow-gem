@@ -78,7 +78,7 @@ module DevFlow
             # if the task not started yet, update progress
             upload_progress!(@waiting[ans.to_i], 10) unless @waiting[ans.to_i].progress > 0
           else
-            error "Invalid input #{ans}. Can not continue."
+            error "Invalid input #{ans}. Can not continue." if ans
           end
         end
       else # if the wd is not clean
