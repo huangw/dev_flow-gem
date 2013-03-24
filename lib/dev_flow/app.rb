@@ -137,7 +137,7 @@ module DevFlow
     end
 
     def display_close_waiting
-      return false unless self.need_to_close.size > 0
+      return false unless self.tasks_for_close.size > 0
       puts hrh
       puts "There have tasks marked completed and need you to review it:"
       i = 0
