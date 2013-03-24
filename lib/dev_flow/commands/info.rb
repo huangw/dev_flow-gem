@@ -65,7 +65,7 @@ module DevFlow
           puts "You are in a release branch, please release it as soon as possible."
         else # otherwise show switch options
           puts "You switch to other branches:".bold.yellow
-          puts "Type #{0.to_s.bold} to switch to develop trunk."
+          puts "Type #{0.to_s.bold} to switch to develop trunk." unless @git.current_branch == 'develop'
           puts "Simply press enter to keep working on the current branch."
           print @waiting.keys.join(", ") + ":"
 
