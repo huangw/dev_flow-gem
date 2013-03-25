@@ -55,7 +55,7 @@ module DevFlow
     # log message handler
     # ------------------------------
     def error msg
-      @logger.fatal ("[ERROR] " + msg)..bold.red
+      @logger.fatal ("[ERROR] " + msg).bold.red
       exit
     end
 
