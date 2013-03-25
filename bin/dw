@@ -74,7 +74,7 @@ unless command == 'init'
 end
 
 if command == 'release'
-  options[:release] == true
+  options[:release] = true
   command = 'complete'
 end
 

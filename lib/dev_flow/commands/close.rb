@@ -16,6 +16,11 @@ module DevFlow
         error "Use command 'close' to close a non-release branch." if @config[:release]
       end
 
+      if in_release? and @config[:release]
+        error "You should first complete a branch before release." unless current_task and current_task.progress == 99 
+      end
+      
+
       self.ask_rebase true # force rebase
       puts hr
 
