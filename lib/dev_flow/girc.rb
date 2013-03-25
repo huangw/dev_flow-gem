@@ -130,7 +130,11 @@ module DevFlow
     # remote from a specified remote ref
     def rebase! remote = 'origin', branch = 'develop'
       cb = self.current_branch
-      self.stash!
+      stashed = false
+      unless self.wd_clean?
+        self.stash!
+        stashed = true
+      end
 
       if branch == self.current_branch
         info "Rebase pull from remote"
@@ -150,7 +154,7 @@ module DevFlow
         raise "Rebase with #{branch} failed: #{rslt}" unless $?.success?
       end
 
-      self.stash_pop!
+      self.stash_pop! if stashed
     end
 
   end

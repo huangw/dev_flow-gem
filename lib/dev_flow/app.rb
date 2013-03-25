@@ -191,8 +191,12 @@ module DevFlow
       end
 
       # do the rebase:
-      puts "rebase you working directory from #{@config["git_remote"]}/devleop"
-      @git.rebase! @config["git_remote"], 'develop'
+      if @config["git_remote"]
+        info "Rebase you working directory from #{@config["git_remote"]}/devleop"
+        @git.rebase! @config["git_remote"], 'develop'
+      else
+        info "Git remote not defined, skip rebase."
+      end
     end
 
     # switch to other branch
