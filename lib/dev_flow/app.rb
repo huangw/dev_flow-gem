@@ -55,16 +55,16 @@ module DevFlow
     # log message handler
     # ------------------------------
     def error msg
-      @logger.fatal msg.bold.red
+      @logger.fatal ("[ERROR] " + msg)..bold.red
       exit
     end
 
     def warn msg
-      @logger.warn msg.yellow
+      @logger.warn ("[WARN] " + msg).yellow
     end
 
     def info msg
-      @logger.info msg
+      @logger.info "[INFO] " + msg
     end
 
     # helper function
