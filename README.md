@@ -147,18 +147,17 @@ they will be merged into both `develop` and `master` trunk, and a `release-xxx` 
 
 ### Semantic Versioning and Special Tasks
 
-Tasks with branch name starts with `release_`, `bugfix_`, `hotfix_` ... 
-will have special meanings. 
+Tasks with branch name starts with `release_`, `hotfix_` ... 
+will affect the version number. 
 
 You use `release_` branch to manually manage major and minor versioning, 
-e.g. `release_v0.1` will create a tag `version_0.1`, and bugfix, hotfix branches 
-will add-up fix numbers after it such as: `version_0.1.28`. (TODO)
+e.g. `release_v0.1` will create a tag `version-0.1`, and hotfix branches 
+will add-up fix numbers after it such as: `version-0.1.28`. All those 
+branches will merged into `master` trunk.
 
 `milestone_` is a special type of task that corresponding to important event 
-in the development flow but do not affect version numbers 
-(for example event for team code review, customer acceptance review, etc.). 
-
-Other tasks also do not affect version numbers.
+in the development flow (for example event for team code review, 
+customer acceptance review, etc.), but do not affect version numbers, so do other tasks.
 
 Sometimes you may want to use 'prepare releases' such as `release_v0.1a`, `release_v0.1b`, 
 avoid sandwich tasks between prepare releases and releases.
