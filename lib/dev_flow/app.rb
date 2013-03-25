@@ -230,5 +230,23 @@ module DevFlow
       end
     end
 
+    def new_version branch_name
+      if branch_name =~ /^release\_v/
+        return branch_name.gsub('release_v', 'version-')
+      elsif branch_name =~ /^hotfix\_/
+        last_v = ''
+        `git tag`.split("\n").each do |t|
+          if /^version\-\d+\.\d+\.(?<nm_>\d+)$/ =~ t # with fix number
+            last_v = t.gsub(/\d+$/, (nm_.to_i + 1).to_s)
+          elsif /^version\-\d+\.\d+$/ =~ t # without fix number
+            last_v = t + '.1'
+          end
+        end
+        return last_v
+      else
+        return ''
+      end
+    end
+
   end # class
 end
