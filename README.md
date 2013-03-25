@@ -114,7 +114,7 @@ A typical task definition line should following the format:
 one + represent a 1st degree (level) task, ++ represent a second degree task, .... 
 Task degree with smaller number may contains several tasks with higher degree number.
 
-- `branch_name` must contains only a-z, 0-9 and underscore, which is used as git branch name,
+- `branch_name` must contains only a-z, 0-9, dot and underscore, which is used as git branch name,
 and also serves as a id for that task within the same ROADMAP file.
 
 - `taskname` could use any characters provide not contains 'date like' parts (see the next description).
@@ -130,7 +130,7 @@ If the task need more than one resources use ; to separate them.
 
 - If the task depends on other task, puts their id after `->`.
 
-### Git Branch Models
+### Git Branching Models
 
 - `master`, `develop`, `staging` and `production` branches are **trunks**. Code implementation 
 and modification should be done in non-trunk branches and merged into trunks according the following roles.
