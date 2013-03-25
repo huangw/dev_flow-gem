@@ -36,7 +36,6 @@ module DevFlow
       
       # rewrite progress in ROADMAP file under develop trunk
       upload_progress! current_task, progress, true
-
     end
 
   end # class
