@@ -51,13 +51,14 @@ optparse.parse!(ARGV)
 
 # determine the command
 command = ARGV[0] || 'info'
-cmd_alias = {'pg' => 'progress', 'update-roadmap' => 'ur'}
+cmd_alias = {'pg' => 'progress', 'update-roadmap' => 'ur', 'clean' => 'cleanup'}
 command = cmd_alias[command] if cmd_alias[command]
 
-if %w[info init complete progress close release ur update-roadmap].include? command
+if %w[info init complete progress close release ur update-roadmap cleanup clean].include? command
   options[:command] = command
 else
-  raise "unknown command #{command}"
+  puts "unknown command #{command}".red
+  exit
 end
 
 unless File.exists? (options[:roadmap])
