@@ -1,7 +1,7 @@
 DevFlow: ROADMAP/git based develop flow control
 ===================================================
 
-Pre-alpha implementation for internal use only.
+WARNING: Pre-alpha implementation for internal use only.
 
 Pre-Requirement
 -----------------
@@ -10,14 +10,21 @@ Pre-Requirement
 - A workable git installation and `git` command in the path
 - Ruby 1.9.x
 
+Install
+-----------
+
+    $ [sudo] gem install dev_flow 
+
 Work Flow
 -------------
 
+Under you development working directory:
+
 1. Write a `ROADMAP` file in a specified format
 2. (Optional) create `members.yml` file define known developers
-2. Run `dw` with sub-command 
+2. Run `dw` command 
 
-Typical commands of the work flow are:
+Sub-commands for typical work flow jobs are:
 
     $ dw [info]            # show task information
 
@@ -26,9 +33,9 @@ Typical commands of the work flow are:
 
     $ dw complete          # mark that the implemention is completed
 
-    $ dw close             # this command is for project leader only, close the current task
+    $ dw close             # this command is for project leader only, it will close the current task,
                            # merge it into `develop` trunk and delete the git branch both 
-                           # locally and remotely).
+                           # locally and remotely.
 
     $ dw release           # like close but for release branch only. 
                            # the change will be merged into both `develop` and `master` branch.
@@ -72,22 +79,30 @@ treated as information header. Which should be in YAML format and should at leas
 
 If you define `year` in the header, you can write date in `mm/dd` format instead 
 of `yyyy/mm/dd`. Usually you should define developers in a separate `members.yml` file,
-but you can define additional members in the header area too.
+but you can define extra members in the header area too (usually for who only join to
+one or few projects).
 
 ### Team and Leader
 
 Leader has a higher priority than team members, only leader can edit roadmap, 
 close a task branch, and make a release, etc.
 
-If you also defines `supervisor`, `moderator`, they can also update the roadmap.
+If you also defines `supervisor`, `moderator`, they can update the roadmap too,
+but can not close or release a branch.
 
-Generally you should use short names in team members to save typings, 
+IMPORTANT: those kind of permission is just introduced for avoid miss operation,
+NOT intended as a security mechanism. You still needs setup permissions on your
+remote git server if security is a concern.
+
+Generally you are encouraged to use short names in team members to save typings, 
 by define a `members.yml` file in the following format:
 
     members:
       short_name: [Display Name, 'email@address.com']
 
-### Task Tree
+This is also a way to avoid typos in ROADMAP definitions.
+
+### The Task Tree
 
 Every line start with a `[+]` (or `[++]`, `[+++]` ...) will be treated as a task definition. 
 
@@ -96,17 +111,19 @@ A typical task definition line should following the format:
     [+] branch_name: taskname date/to/start[-date/to/stop] @resource[;resource] [-> dependent_on;dependent_on]
 
 - `[+]` one or more + in bracket is the indicator of task definition, 
-one + represent a 1st degree task, ++ represent a second degree task, .... 
-Task with lower degree may contains several higher degree tasks.
+one + represent a 1st degree (level) task, ++ represent a second degree task, .... 
+Task degree with smaller number may contains several tasks with higher degree number.
 
 - `branch_name` must contains only a-z, 0-9 and underscore, which is used as git branch name,
 and also serves as a id for that task within the same ROADMAP file.
 
-- `taskname` could use any characters provide not contains 'date like' parts.
+- `taskname` could use any characters provide not contains 'date like' parts (see the next description).
 
 - `date/to/start` should in format 2013/03/03 or 03/03 if you defined `year` in the 
-header (so you can specify only the `mm/dd` part). 
-Additionally, if the task duration is within one day, date/to/stop part can be omitted.
+header (so you can specify only the `mm/dd` part). Use `mm/dd-mm/dd` (`yyyy/mm/dd-yyyy/mm/dd`) 
+to specify a period.
+
+If the task duration is within one day, date/to/stop part can be omitted.
 
 - `@resource`: resource should correspond to leader or one of the team member. 
 If the task need more than one resources use ; to separate them.
@@ -115,18 +132,18 @@ If the task need more than one resources use ; to separate them.
 
 ### Git Branch Models
 
-- `master`, `develop`, `staging` and `production` branches are **trunks**. Code modification
-should done in non-trunk branches and merged into trunks according basic roles.
+- `master`, `develop`, `staging` and `production` branches are **trunks**. Code implementation 
+and modification should be done in non-trunk branches and merged into trunks according the following roles.
 
 - The `master` trunk is a production ready branch, `develop` is the **integration** branch
-that contains latest code of completed feature that passed integrate test.
+that contains latest code of completed feature that passed all integration test.
 
-- Development branches (**task branch**) should merge from `develop` often, and merged
+- Development branches (**task branch**) should stem from `develop` often, and merged
 back into `develop` trunk as soon as the implementation complete and passed all unit and 
 integration tests.
 
-- Release branches do not introduce new code but bug fix, after pass the QC tests, it 
-release branches will be merged into `master` trunk.
+- Release branches is purely for code review, test and necessary bug fix, after pass all of that, 
+they will be merged into both `develop` and `master` trunk, and a `release-xxx` tag will be attached.
 
 ### Semantic Versioning and Special Tasks
 
@@ -135,11 +152,11 @@ will have special meanings.
 
 You use `release_` branch to manually manage major and minor versioning, 
 e.g. `release_v0.1` will create a tag `version_0.1`, and bugfix, hotfix branches 
-will add-up fix numbers after it such as: `version_0.1.28`. 
+will add-up fix numbers after it such as: `version_0.1.28`. (TODO)
 
 `milestone_` is a special type of task that corresponding to important event 
-in the development flow but not reflects to version numbers 
-(for example event for code review). 
+in the development flow but do not affect version numbers 
+(for example event for team code review, customer acceptance review, etc.). 
 
 Other tasks also do not affect version numbers.
 
@@ -149,16 +166,17 @@ avoid sandwich tasks between prepare releases and releases.
 Local Configuration
 ---------------------
 
-Default is stored in `.dev_flow` file and will be set to ignored by git 
+Default is stored in `.dev_flow` file and will be set to `git`'s ignore list (`.gitignore`) 
 (so these settings only affect your local working directory).
 
 Without this file `dw` will go into the initialization mode (by asking you some questions).
 
-You can use `--local-config FILE` to specify an other file.
+You can use `--local-config FILE` to store those information in an other file name.
 
-`.dev_flow` is also in yaml format and the most important key is `whoami`, which corresponds 
-to one of the leader or team members, indicates who is currently working on the local working
-directory, and `git_remote` defines with git remote server to use (default is `origin`).
+`.dev_flow` is also in yaml format and the most important key are `whoami` and `git_remote`,
+`whoami` specifies who is currently working on the local working directory, 
+and `git_remote` defines witch git remote server to use (default is `origin`).
+With out `git_remote` the `dw` command will not try to communicate to remote git server.
 
 Command Details
 -------------------
@@ -166,16 +184,18 @@ Command Details
 - `dw init` default command if no `.dev_flow` file found.
 
 - `dw [info]` or `dw` without command will list the tasks and if the working directory 
-is clean, let user chose which tasks to start with.
+is clean, let user chose to switch to working for known tasks.
 
-- `dw progress 0-99` set task progress. `dw pg` is an alias of progress.
+- `dw progress 0-98` set task progress. `dw pg` is an alias of `dw progress`. You are
+encouraged to frequently use this command to store you changes to remote servers (typically 
+several times a day).
 
-- `dw complete` set task progress to 100 (complete a task), send to leader.
+- `dw complete` set task progress to 99 (complete a task), urge the leader to review/test and
+close it.
 
-- `dw close`/`dw release` close the task by the leader, or release a release 
-branch (to master trunk).
+- `dw close`/`dw release` close the task by the leader, or release it (to master trunk).
 
-- `dw update-roadmap` or `dw ur` update the roadmap.
+- `dw update-roadmap` or `dw ur` used for update the roadmap (should only be used on `devleop` trunk).
 
-- `dw cleanup` will delete local branches corresponding completed tasks.
+- `dw cleanup` will delete local branches corresponding completed tasks (TODO).
 
