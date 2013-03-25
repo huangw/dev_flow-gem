@@ -49,7 +49,7 @@ module DevFlow
         info "Merge the release branch into master trunk"
         `git checkout master`
         `git merge --no-ff develop`
-        tag = find_version current_task.branch_name
+        tag = new_version current_task.branch_name
         if tag
           info "Tag your release as #{tag}"
           `git tag #{tag}`
