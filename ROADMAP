@@ -10,6 +10,6 @@ leader: huangw
 year: 2013
 % -----
 
-[+] release_v0.3: with version number handling 03/25 @huangw:99
+[+] release_v0.3: with version number handling 03/25 @huangw:03/25
 [+] hotfix_taginfo: put tag situation on info screen 03/25 @huangw
 [+] release_v0.4: with cleanup closed local task branches 03/25 @huangw
