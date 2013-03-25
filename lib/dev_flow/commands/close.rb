@@ -17,7 +17,7 @@ module DevFlow
       end
 
       if in_release? and @config[:release]
-        error "You should first complete a branch before release." unless current_task and current_task.progress == 99 
+        error "You should use release only on branches just completed." unless current_task and current_task.progress == 99 
       end
       
 
