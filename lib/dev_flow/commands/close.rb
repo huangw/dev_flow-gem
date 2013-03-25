@@ -56,6 +56,9 @@ module DevFlow
         end
         info "Push your change to remote server"
         `git push #{@config[:git_remote]} --tags master` if @config[:git_remote]
+
+        puts "Now your are on branch #{'master'.bold.red}"
+        puts "You may want to review and test the program again and then switch back to develop trunk."
       end
       
       info "Delete closed branch #{current_task.branch_name}"
