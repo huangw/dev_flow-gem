@@ -24,7 +24,7 @@ module DevFlow
 
       # commit you current branch and push
       progress = 99
-      message = ARGV[2] || "complete your branch by set progress to 99."
+      message = ARGV[2] || "complete the branch by set progress to 99."
       message = "[complete] " + message
 
       info "Commit your progress"
