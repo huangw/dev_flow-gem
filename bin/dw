@@ -75,7 +75,8 @@ end
 
 if command == 'release'
   options[:release] = true
-  command = 'complete'
+  info "Use complete task with release option"
+  command = 'close'
 end
 
 DevFlow.invoke!(options, command)
