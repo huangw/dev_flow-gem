@@ -137,15 +137,17 @@ module DevFlow
       end
 
       if branch == self.current_branch
-        info "Rebase pull from remote"
-        `#{@git} pull --rebase #{remote} #{branch}`
+        info "Pull from remote"
+        # `#{@git} pull --rebase #{remote} #{branch}`
+        `#{@git} pull #{remote} #{branch}`
       else
         info "Switch to branch #{branch}"
         `#{@git} fetch #{remote}`
         rslt = `#{@git} checkout #{branch}`
         raise "Checkout failed: #{rslt}" unless $?.success?
-        info "Update (rabase) branch"
-        rslt = `#{@git} pull --rebase #{remote} #{branch}`
+        info "Update branch from remote"
+        # rslt = `#{@git} pull --rebase #{remote} #{branch}`
+        rslt = `#{@git} pull #{remote} #{branch}`
         raise "Rebase pull for #{branch} failed: #{rslt}" unless $?.success?
         info "Switch back to branch #{cb}"
         `#{@git} checkout #{cb}`
