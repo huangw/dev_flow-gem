@@ -24,7 +24,7 @@ module DevFlow
         else # otherwise show switch options
           puts "You switch to other branches:".bold.yellow
           puts "Type #{0.to_s.bold} to switch to develop trunk." unless @git.current_branch == 'develop'
-          puts "Simply press enter to keep working on the current branch."
+          puts "Simply press enter to keep working on the current branch.".bold.blue
           print @waiting.keys.join(", ") + ":"
 
           ans = STDIN.gets.chomp!
@@ -75,7 +75,8 @@ module DevFlow
           puts "  $ dw pg 40 'git commit message'".bold.blue
           puts "If you fully implemented and tested the code, issue:"
           puts "  $ dw complete"
-          puts "Then #{'do not forget'.bold.red} inform the leader (#{leader_name.bold})."
+          puts "to complete the task."
+          # puts "Then #{'do not forget'.bold.red} inform the leader (#{leader_name.bold})."
         else
           puts "You are not on any non-branches. You may commit all you changes and"
           puts "switch to develop trunk before the next move:"
