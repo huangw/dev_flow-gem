@@ -166,7 +166,7 @@ module DevFlow
         header = nil
         header = '+'.bold.green if task.is_completed? 
         header = '-' unless header or task.is_workable?
-        header = nil if @git.current_branch == task.branch_name
+        header = '=' if @git.current_branch == task.branch_name
         unless header
           j += 1
           header = j.to_s.bold
