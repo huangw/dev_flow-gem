@@ -142,6 +142,8 @@ module DevFlow
         # `#{@git} pull --rebase #{remote} #{branch}`
         `#{@git} pull #{remote} #{branch}`
       else
+        info "pull branch #{self.current_branch} from remote"
+        `#{@git} pull #{remote} #{self.current_branch}`
         info "Switch to branch #{branch}"
         `#{@git} fetch #{remote}`
         rslt = `#{@git} checkout #{branch}`
