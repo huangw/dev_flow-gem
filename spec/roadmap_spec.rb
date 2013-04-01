@@ -23,6 +23,13 @@ describe DevFlow::RoadMap do
         roadmap.ln_tasks[70].dependencies[0].branch_name.should eq("release_api_design_0.1")
         roadmap.ln_tasks[70].dependencies[1].branch_name.should eq("model_spec")
       end
+
+      it "return a list of team members" do
+        %w[huangw  xuyc liudx cuibg wangqh].each do |m|
+          roadmap.team_member_names.include?(m).should be_true
+        end
+        roadmap.team_member_names.include?('sunyr').should be_false
+      end
     end
   end
 end

@@ -22,6 +22,16 @@ module DevFlow
       @config[:title]
     end
 
+    def team_member_names
+      mary = @config["team"] || Array.new
+      %w[leader moderator supervisor].each do |role|
+        if @config[role]
+          mary << @config[role] unless mary.include? @config[role]
+        end
+      end
+      mary
+    end
+
     def parse file = nil
       self.file = file if file
       fh = File.open(self.file, "r:utf-8")

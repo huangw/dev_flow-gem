@@ -9,24 +9,24 @@ module DevFlow
 
       # find the current user
       sugguest = @config["whoami"] if @config["whoami"]
-      unless all_member_names.include? sugguest
+      unless @roadmap.team_member_names.include? sugguest
         info "use system 'whoami' command to find user name"
         begin
           suggest = `whoami`
         end
-        info "found #{suggest}" if all_member_names.include? sugguest
+        info "found #{suggest}" if @roadmap.team_member_names.include? sugguest
       end
 
-      unless all_member_names.include? sugguest
+      unless @roadmap.team_member_names.include? sugguest
         info "use git config to find user name"
         sugguest = @git.config["user.email"].gsub(/\@.+$/, '') if @git.config["user.email"]
-        info "found #{suggest}" if all_member_names.include? sugguest
+        info "found #{suggest}" if @roadmap.team_member_names.include? sugguest
       end
       
       # ask the user for the user name
       puts "Tell us who you are: ".bold.yellow
-      msg = all_member_names.join(", ")
-      if all_member_names.include? sugguest
+      msg = @roadmap.team_member_names.join(", ")
+      if @roadmap.team_member_names.include? sugguest
         msg += " [#{sugguest}]"
       end
 
@@ -34,6 +34,7 @@ module DevFlow
       ans = STDIN.gets.chomp!
       ans = sugguest unless ans.size > 0
       error "Unknown member! Can not continue." unless all_member_names.include? ans
+      error "You are not in the team, you should not edit the files under this project" unless @roadmap.team_member_names.include? ans
 
       # find the default git remote server
       @config["whoami"] = ans
