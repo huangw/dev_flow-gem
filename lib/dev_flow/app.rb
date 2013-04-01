@@ -227,14 +227,14 @@ module DevFlow
 
       info "Set progress of #{task.display_name} to #{progress}"
       `git commit -am 'update progress of task #{task.branch_name} to #{progress}'`
-      `git push #{@config[:git_remote]} develop` if @config[:git_remote]
+      `git push #{@config["git_remote"]} develop` if @config["git_remote"]
 
       # if this is a complete update, do not switch back
       unless (is_complete or current_branch == 'develop')
         switch_to! current_branch
         `git merge develop`
-        if @config[:git_remote]
-          `git push #{@config[:git_remote]} #{current_branch}`
+        if @config["git_remote"]
+          `git push #{@config["git_remote"]} #{current_branch}`
           ask_rebase true # force rebase from git remote
         end
       end
