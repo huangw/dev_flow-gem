@@ -19,6 +19,7 @@ require 'dev_flow/girc'
 
 module DevFlow
   def self.invoke! config, command
+    # autoload command required files
     require "dev_flow/commands/#{command}"
     klass = command.to_s.capitalize
     eval(klass).new(config, command).process!

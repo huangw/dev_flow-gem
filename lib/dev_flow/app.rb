@@ -28,6 +28,14 @@ module DevFlow
         @config = @config.merge(YAML.load(File.open(@config[:local_config], 'r:utf-8').read)) 
       end
       
+      # load roadmap into variable @roadmap
+      load_roadmap
+
+      # suggest user to take those tasks
+      @waiting = Hash.new
+    end
+
+    def load_roadmap
       # load roadmap, reload config 
       if @config[:roadmap] and File.exists? (@config[:roadmap])
         info "Load roadmap from #{@config[:roadmap]}"
@@ -47,9 +55,6 @@ module DevFlow
       if @config["whoami"]
         error "You (#{user_name}) are not in the known member list. You may use 'dw init' to setup the working environment." unless all_member_names.include? @config["whoami"]
       end
-
-      # suggest user to take those tasks
-      @waiting = Hash.new
     end
 
     # log message handler
@@ -195,6 +200,7 @@ module DevFlow
       if @config["git_remote"]
         info "Rebase you working directory from #{@config["git_remote"]}/devleop"
         @git.rebase! @config["git_remote"], 'develop'
+        load_roadmap # load roadmap again
       else
         info "Git remote not defined, skip rebase."
       end
@@ -221,13 +227,16 @@ module DevFlow
 
       info "Set progress of #{task.display_name} to #{progress}"
       `git commit -am 'update progress of task #{task.branch_name} to #{progress}'`
-      `git push #{@config[:git_remote]} develop` if @config[:git_remote]
+      `git push #{@config["git_remote"]} develop` if @config["git_remote"]
 
       # if this is a complete update, do not switch back
       unless (is_complete or current_branch == 'develop')
         switch_to! current_branch
         `git merge develop`
-        `git push #{@config[:git_remote]} #{current_branch}` if @config[:git_remote]
+        if @config["git_remote"]
+          `git push #{@config["git_remote"]} #{current_branch}`
+          ask_rebase true # force rebase from git remote
+        end
       end
     end
 

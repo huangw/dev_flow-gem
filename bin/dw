@@ -75,6 +75,7 @@ unless command == 'init'
   end
 end
 
+# release is just a alias of command close buth with a option flag set
 if command == 'release'
   options[:release] = true
   command = 'close'

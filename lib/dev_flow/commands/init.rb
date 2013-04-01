@@ -34,7 +34,7 @@ module DevFlow
       ans = STDIN.gets.chomp!
       ans = sugguest unless ans.size > 0
       error "Unknown member! Can not continue." unless all_member_names.include? ans
-      error "You are not in the team, you should not edit the files under this project" unless @roadmap.team_member_names.include? ans
+      error "You are not in the team, you should not edit the files under this project." unless @roadmap.team_member_names.include? ans
 
       # find the default git remote server
       @config["whoami"] = ans
@@ -52,7 +52,7 @@ module DevFlow
 
       ans2 = STDIN.gets.chomp!
       ans2 = suggest unless ans2.size > 0
-      error "You must define a valid git remote server" unless remotes.include? ans2
+      error "You must define a valid git remote server." unless remotes.include? ans2
 
       # write out to the local configuration file
       info "write contents to local configuration file"
