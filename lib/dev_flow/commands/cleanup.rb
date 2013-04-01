@@ -14,6 +14,9 @@ module DevFlow
           end
         end
       end
+
+      info "prune git remote (delete zoombie remote refs)"
+      `git remote prune #{@config["git_remote"]}`
     end
 
   end # class
