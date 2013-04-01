@@ -115,7 +115,7 @@ module DevFlow
 
     def stash!
       unless wd_clean?
-        info "Save you change to stash"
+        info "Stash your local changes"
         `#{@git} add .`
         `#{@git} stash`
       end
@@ -131,8 +131,8 @@ module DevFlow
     def rebase! remote = 'origin', branch = 'develop'
       cb = self.current_branch
       stashed = false
+
       unless self.wd_clean?
-        info "Stash your local changes"
         self.stash!
         stashed = true
       end
@@ -142,21 +142,24 @@ module DevFlow
         # `#{@git} pull --rebase #{remote} #{branch}`
         `#{@git} pull #{remote} #{branch}`
       else
-        info "pull branch #{self.current_branch} from remote"
-        `#{@git} pull #{remote} #{self.current_branch}`
         info "Switch to branch #{branch}"
         `#{@git} fetch #{remote}`
         rslt = `#{@git} checkout #{branch}`
         raise "Checkout failed: #{rslt}" unless $?.success?
+        
         info "Update branch from remote"
         # rslt = `#{@git} pull --rebase #{remote} #{branch}`
         rslt = `#{@git} pull #{remote} #{branch}`
         raise "Pull for #{branch} failed: #{rslt}" unless $?.success?
+        
         info "Switch back to branch #{cb}"
         `#{@git} checkout #{cb}`
         info "Merge from #{branch}"
         rslt = `#{@git} merge #{branch}`
         raise "Merge with #{branch} failed: #{rslt}" unless $?.success?
+
+        info "pull branch #{self.current_branch} from remote"
+        `#{@git} pull #{remote} #{self.current_branch}`
       end
 
       self.stash_pop! if stashed
