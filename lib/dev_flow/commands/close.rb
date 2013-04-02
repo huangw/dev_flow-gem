@@ -31,9 +31,9 @@ module DevFlow
 
       info "commit progress"
       `git commit -am '#{message}'`
-      if @config[:git_remote]
+      if @config["git_remote"]
         info "push your progress to remote server"
-        `git push #{@config[:git_remote]} #{current_task.branch_name}`
+        `git push #{@config["git_remote"]} #{current_task.branch_name}`
       end
       
       # goto develop branch and merge
@@ -55,7 +55,7 @@ module DevFlow
           `git tag #{tag}`
         end
         info "Push your change to remote server"
-        `git push #{@config[:git_remote]} --tags master` if @config[:git_remote]
+        `git push #{@config["git_remote"]} --tags master` if @config["git_remote"]
 
         puts "Now your are on branch #{'master'.bold.red}"
         puts "You may want to review and test the program again and then switch back to develop trunk."

@@ -10,7 +10,7 @@ module DevFlow
       `git add .`
       `git commit -am 'update roadmap'`
       info "Push your change to the remote server"
-      `git push #{@config[:git_remote]} develop` if @config[:git_remote]
+      `git push #{@config["git_remote"]} develop` if @config["git_remote"]
     end
 
   end # class
