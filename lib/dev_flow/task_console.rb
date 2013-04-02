@@ -1,6 +1,6 @@
 module DevFlow
-  class Task
 
+  class Task
     def as_title header = ' '
       name = self.display_name
       name = self.display_name.bold if self.is_workable?
@@ -13,7 +13,7 @@ module DevFlow
         on_branch = sprintf "(=> %s, %02d%%)", self.branch_name.bold, self.progress
       end
 
-      title = sprintf("%s[%s]%s%s", '  '*(self.level-1), header, name, on_branch)
+      title = sprintf("%s[%s]%s (%s-%s) %s", '  '*(self.level-1), header, name, DateName.zh(self.start_date), DateName.zh(self.end_date), on_branch)
     end
 
     ## a task is completable if all children complated

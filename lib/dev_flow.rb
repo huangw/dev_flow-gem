@@ -13,6 +13,7 @@ require 'dev_flow/task_console'
 # application and commands
 require 'dev_flow/app'
 require 'dev_flow/version'
+require 'dev_flow/date_name'
 
 # other helper and libraries
 require 'dev_flow/girc'
