@@ -53,7 +53,7 @@ module DevFlow
         end
 
         if current_task and current_task.progress == 99
-          if i_am_leader
+          if i_am_leader?
             puts "You are in a branch marked complete. Please test and review the code, and close it by:"
             puts "  $ dw close".bold.blue
             puts "Or reject the branch by issue:"
