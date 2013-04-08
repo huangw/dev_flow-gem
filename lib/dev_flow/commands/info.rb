@@ -35,7 +35,7 @@ module DevFlow
             switch_to! @waiting[ans.to_i].branch_name
 
             # update your work directory
-            `git pull #{@config["git_remote"]} #{@waiting[ans.to_i].branch_name}` if @config["git_remote"]
+            `git pull #{@config["git_remote"]} #{@waiting[ans.to_i].branch_name}` if @config["git_remote"] and @waiting[ans.to_i].progress > 0
 
             # if the task not started yet, update progress
             upload_progress!(@waiting[ans.to_i], 10) unless @waiting[ans.to_i].progress > 0
