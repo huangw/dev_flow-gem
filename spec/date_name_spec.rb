@@ -31,5 +31,15 @@ describe DateName do
     it "can handle before 11 days on last year" do
       DateName.zh(DateTime.parse("2011-12-20"), DateTime.parse("2012-1-1")).should eq('2011年12月20日')
     end
+    
+    it "can handle today" do
+      DateName.zh('2013/04/12', '2013/04/12').should eq('今天')
+    end
+
+    it "can handle tomorrow" do
+      DateName.zh('2013/04/13', '2013/04/12').should eq('明天')
+    end
+
   end
+
 end

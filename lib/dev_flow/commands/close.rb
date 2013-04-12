@@ -63,6 +63,11 @@ module DevFlow
       
       info "Delete closed branch #{current_task.branch_name}"
       `git branch -d #{current_task.branch_name}`
+      
+      if @config["git_remote"]
+        info "Delete closed branch remotely"
+        `git push #{@config["git_remote"]} :#{current_task.branch_name}`
+      end
     end
 
   end # class
