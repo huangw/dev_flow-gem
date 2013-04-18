@@ -52,10 +52,10 @@ optparse.parse!(ARGV)
 
 # determine the command
 command = ARGV[0] || 'info'
-cmd_alias = {'pg' => 'progress', 'update-roadmap' => 'ur', 'clean' => 'cleanup'}
+cmd_alias = {'pg' => 'progress', 'update-roadmap' => 'ur', 'clean' => 'cleanup', 's' => 'switch'}
 command = cmd_alias[command] if cmd_alias[command]
 
-if %w[info init complete progress close release ur update-roadmap cleanup clean].include? command
+if %w[info init complete progress close release ur update-roadmap cleanup clean switch].include? command
   options[:command] = command
 else
   puts "unknown command #{command}".red
@@ -79,6 +79,12 @@ end
 if command == 'release'
   options[:release] = true
   command = 'close'
+end
+
+if command = 'switch'
+  options[:switch] = true
+  options[:branch] = ARGV[1] || ''
+  command = 'info'
 end
 
 DevFlow.invoke!(options, command)

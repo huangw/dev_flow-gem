@@ -28,6 +28,9 @@ Sub-commands for typical work flow jobs are:
 
     $ dw [info]            # show task information
 
+    $ dw switch [branch]   # switch to branch, or list workable branches to switch to
+    $ dw s [branch]        # alias of switch
+
     $ dw progress 80       # mark the task as completed at 80 percent
     $ dw pg 80             # same as progress
 
@@ -177,6 +180,9 @@ You can use `--local-config FILE` to store those information in an other file na
 and `git_remote` defines witch git remote server to use (default is `origin`).
 With out `git_remote` the `dw` command will not try to communicate to remote git server.
 
+If `git_remote` defined, `dw` command will try to sync with the remote git server,
+unless you explicitly specify `--offline` (`-o`) option.
+
 Command Details
 -------------------
 
@@ -184,6 +190,9 @@ Command Details
 
 - `dw [info]` or `dw` without command will list the tasks and if the working directory 
 is clean, let user chose to switch to working for known tasks.
+
+- `dw switch [branch]` will list a workable branches to choose to switch to. If current
+branch is `develop`, `switch` is the default command.
 
 - `dw progress 0-98` set task progress. `dw pg` is an alias of `dw progress`. You are
 encouraged to frequently use this command to store you changes to remote servers (typically 
