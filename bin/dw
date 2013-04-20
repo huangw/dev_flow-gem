@@ -12,26 +12,38 @@ options = {}
 
 optparse = OptionParser.new do |opts|
   opts.banner = "Usage: dw [options] [command]"
+  opts.separator ""
+  opts.separator "Commands:"
+  opts.separator "  [info]         : show list of tasks"
+  opts.separator "  switch         : show list of tasks, and tasks can swith to"
+  opts.separator "  switch [branch]: directly switch to a branch"
+  opts.separator "  s      [branch]: alias of switch"
+  opts.separator "  update-roadmap : on develop branch, update the roadmap file"
+  opts.separator "  ur             : alias of update-roadmap"
+  opts.separator "  progress <percentage>: change the task progress to percentage (0-99)"
+  opts.separator "  p <percentage> : alias of progress"
+  opts.separator "  complete       : complete a task, raise progress to 99"
+  opts.separator "  close          : close the task as a leader"
+  opts.separator "  release        : close a release task"
+  opts.separator "  clean[up]      : delete local branches that already completed"
+  opts.separator ""
+  opts.separator "Options:"
 
   options[:roadmap] = 'ROADMAP' # the roadmap file
-  opts.on('-r ROADMAP_FILE', '--roadmap ROADMAP_FILE', 'use an other roadmap file') do |roadmap|
+  opts.on('-r FILE', '--roadmap FILE', 'use an other roadmap file') do |roadmap|
     options[:roadmap] = roadmap
   end
 
   options[:local_config] = '.dev_flow'
-  opts.on('-l LOCAL_CONFIG', '--local-config LOCAL_CONFIG', 'use an other local configuration file') do |lc|
+  opts.on('-l FILE', '--local-config FILE', 'use an other local configuration file') do |lc|
     options[:local_config] = lc
   end
 
   options[:members_file] = 'members.yml' if File.exists? ('members.yml')
   options[:members_file] = 'config/members.yml' if File.exists? ('config/members.yml')
-  opts.on('-m MEMBERS_FILE', '--members_file MEMBERS_FILE', 'use an other members file') do |mf|
+  opts.on('-m FILE', '--members_file FILE', 'use an other members file') do |mf|
     options[:members_file] = mf
     raise "the specified members file #{mf} is not exists." unless File.exists? mf
-  end
-
-  opts.on('-i', '--filter-tasks', 'show only tasks assigned to me') do
-    options[:filter_tasks] = true
   end
 
   opts.on('-o', '--offline', 'do not use remote git server') do 
@@ -58,7 +70,7 @@ command = cmd_alias[command] if cmd_alias[command]
 if %w[info init complete progress close release ur update-roadmap cleanup clean switch].include? command
   options[:command] = command
 else
-  puts "unknown command #{command}".red
+  puts "Unknown command #{command}".red
   exit
 end
 
@@ -67,7 +79,7 @@ unless File.exists? (options[:roadmap])
   exit
 end
 
-# switch to init mode unless .dev_flow file exists
+# enter init mode unless .dev_flow file exists
 unless command == 'init'
   unless File.exists? (options[:local_config])
     puts "Initializing your environment ... "
@@ -81,9 +93,9 @@ if command == 'release'
   command = 'close'
 end
 
-if command = 'switch'
+if command == 'switch'
   options[:switch] = true
-  options[:branch] = ARGV[1] || ''
+  options[:branch] = ARGV[1]
   command = 'info'
 end
 

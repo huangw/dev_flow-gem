@@ -1,12 +1,12 @@
-DevFlow: ROADMAP/git based develop flow control
-===================================================
+DevFlow: ROADMAP/git based development flow control
+=====================================================
 
 WARNING: Pre-alpha implementation for internal use only.
 
-Pre-Requirement
------------------
+Requirement
+------------------
 
-- A Bash command line console (cygwin is supported)
+- A Bash compatible console (cygwin is supported)
 - A workable git installation and `git` command in the path
 - Ruby 1.9.x
 
@@ -18,7 +18,7 @@ Install
 Work Flow
 -------------
 
-Under you development working directory:
+Under your git working directory:
 
 1. Write a `ROADMAP` file in a specified format
 2. (Optional) create `members.yml` file define known developers
@@ -29,19 +29,19 @@ Sub-commands for typical work flow jobs are:
     $ dw [info]            # show task information
 
     $ dw switch [branch]   # switch to branch, or list workable branches to switch to
-    $ dw s [branch]        # alias of switch
+    ($ dw s [branch]       # alias of switch)
 
     $ dw progress 80       # mark the task as completed at 80 percent
-    $ dw pg 80             # same as progress
+    ($ dw pg 80            # same as progress)
 
     $ dw complete          # mark that the implemention is completed
 
-    $ dw close             # this command is for project leader only, it will close the current task,
-                           # merge it into `develop` trunk and delete the git branch both 
-                           # locally and remotely.
+    $ dw close             # this command is for project leader only, it will 
+                           # mark the current task closed, merge it into `develop` trunk
+                           # and delete the git branch both locally and remotely.
 
-    $ dw release           # like close but for release branch only. 
-                           # the change will be merged into both `develop` and `master` branch.
+    $ dw release           # like close but for release branch only. the change will
+                           # be merged into both `develop` and `master` branch.
 
 More commands may plug in later.
 
@@ -56,9 +56,7 @@ See more options by issue
 
     $ dw -h 
 
-or
-
-    $ dw --help
+(or `dw --help`)
 
 ### Information Header
 
@@ -135,18 +133,18 @@ If the task need more than one resources use ; to separate them.
 
 ### Git Branching Models
 
-- `master`, `develop`, `staging` and `production` branches are **trunks**. Code implementation 
-and modification should be done in non-trunk branches and merged into trunks according the following roles.
+- `master`, `develop` branches are **trunks**. 
+
+You should modify code only in non-trunk branches and merge your change into trunks 
+according the following roles.
 
 - The `master` trunk is a production ready branch, `develop` is the **integration** branch
-that contains latest code of completed feature that passed all integration test.
+that contains latest code of completed feature that _passed_all_integration_ test.
 
-- Development branches (**task branch**) should stem from `develop` often, and merged
-back into `develop` trunk as soon as the implementation complete and passed all unit and 
-integration tests.
+- You write programs under **task branches** that created from `develop`. You should 
+use `dw` often to merge newest changes from `develop` trunk.
 
-- Release branches is purely for code review, test and necessary bug fix, after pass all of that, 
-they will be merged into both `develop` and `master` trunk, and a `release-xxx` tag will be attached.
+Ensure all tests pass before you `dw complete` your branch.
 
 ### Semantic Versioning and Special Tasks
 
@@ -188,8 +186,8 @@ Command Details
 
 - `dw init` default command if no `.dev_flow` file found.
 
-- `dw [info]` or `dw` without command will list the tasks and if the working directory 
-is clean, let user chose to switch to working for known tasks.
+- `dw [info]` or `dw` without command will list tasks. If `git_remote` defined, it will
+try to merge newest changes from remote git server (from your branch and `develop` trunk).
 
 - `dw switch [branch]` will list a workable branches to choose to switch to. If current
 branch is `develop`, `switch` is the default command.
@@ -205,5 +203,5 @@ close it.
 
 - `dw update-roadmap` or `dw ur` used for update the roadmap (should only be used on `devleop` trunk).
 
-- `dw cleanup` will delete local branches corresponding completed tasks (TODO).
+- `dw cleanup` will delete local branches corresponding completed tasks.
 
