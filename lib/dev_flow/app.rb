@@ -91,9 +91,10 @@ module DevFlow
       @members[@config["leader"]].display_name
     end
 
-    def task
+    def task branch = nil
+      branch = @git.current_branch unless branch
       @roadmap.tasks.each do |task|
-        return task if task.branch_name == @git.current_branch
+        return task if task.branch_name == branch
       end
       nil
     end

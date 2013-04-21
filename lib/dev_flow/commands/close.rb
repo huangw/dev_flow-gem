@@ -9,6 +9,7 @@ module DevFlow
       # whether I am working on a proper task branch
       current_task = self.task
       error "Not on a known task branch. Can not continue." unless current_task      
+      error "Can not close task offline" unless sync?
 
       if current_task and (in_release? or current_task.branch_name =~ /^hotfix\_/)
         error "Use command 'release' to close a release/hotfix branch." unless @config[:release]
@@ -21,7 +22,7 @@ module DevFlow
       end
       
 
-      self.ask_rebase true # force rebase
+      self.ask_rebase # force rebase
       puts hr
 
       # commit you current branch and push
@@ -31,10 +32,8 @@ module DevFlow
 
       info "commit progress"
       `git commit -am '#{message}'`
-      if @config["git_remote"]
-        info "push your progress to remote server"
-        `git push #{@config["git_remote"]} #{current_task.branch_name}`
-      end
+      info "push your progress to remote server"
+      `git push #{@config["git_remote"]} #{current_task.branch_name}`
       
       # goto develop branch and merge
       `git checkout develop`
@@ -64,10 +63,8 @@ module DevFlow
       info "Delete closed branch #{current_task.branch_name}"
       `git branch -d #{current_task.branch_name}`
       
-      if @config["git_remote"]
-        info "Delete closed branch remotely"
-        `git push #{@config["git_remote"]} :#{current_task.branch_name}`
-      end
+      info "Delete closed branch remotely"
+      `git push #{@config["git_remote"]} :#{current_task.branch_name}`
     end
 
   end # class

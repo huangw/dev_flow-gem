@@ -21,7 +21,8 @@ module DevFlow
         end      
       end
 
-      self.ask_rebase true # force rebase
+      error "Can not work offline for complete a task" unless sync?
+      self.ask_rebase
       puts hr
 
       # commit you current branch and push
@@ -31,10 +32,8 @@ module DevFlow
 
       info "Commit your progress"
       `git commit -am '#{message}'`
-      if @config["git_remote"]
-        info "push your progress to remote server"
-        `git push #{@config["git_remote"]} #{current_task.branch_name}`
-      end
+      info "Push your progress to remote server"
+      `git push #{@config["git_remote"]} #{current_task.branch_name}`
       
       # rewrite progress in ROADMAP file under develop trunk
       upload_progress! current_task, progress, true

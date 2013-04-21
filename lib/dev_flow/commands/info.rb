@@ -1,6 +1,18 @@
 module DevFlow
   class Info < App
 
+    def update_task task
+      if task.progress > 0
+        # update your work directory
+        `git pull #{@config["git_remote"]} #{task.branch_name}` if sync?
+      else
+        # if the task not started yet, update progress
+        upload_progress!(task, 10)
+      end
+
+      ask_rebase
+    end
+
     def process!
       self.hello
 
@@ -22,10 +34,18 @@ module DevFlow
         if i_am_leader? and in_release? # concentrate
           puts "You are in a release branch, please release it as soon as possible."
         else # otherwise show switch options
-          puts "You switch to other branches:".bold.yellow
-          puts "Type #{0.to_s.bold} to switch to develop trunk.".bold.blue unless @git.current_branch == 'develop'
-          puts "Simply press enter to keep working on the current branch."
-          print @waiting.keys.join(", ") + ":"
+
+          options[:switch] = true if @git.current_branch == 'develop'
+          if options[:switch] and options[:branch]
+            switch_task = self.task options[:branch]
+            error "Can not find ROADMAP task for branch #{options[:branch]}" unless switch_task
+            switch_to! options[:branch] if options[:branch]
+            update_task switch_task
+          elsif options[:switch]
+            puts "You can switch to other branches:".bold.yellow
+            puts "Type #{0.to_s.bold} to switch to develop trunk.".bold.blue unless @git.current_branch == 'develop'
+            print @waiting.keys.join(", ") + ":"          
+          end
 
           ans = STDIN.gets.chomp!
           if ans == 0.to_s
@@ -33,12 +53,7 @@ module DevFlow
             `git pull #{@config["git_remote"]} develop` if @config["git_remote"]
           elsif @waiting[ans.to_i]
             switch_to! @waiting[ans.to_i].branch_name
-
-            # update your work directory
-            `git pull #{@config["git_remote"]} #{@waiting[ans.to_i].branch_name}` if @config["git_remote"] and @waiting[ans.to_i].progress > 0
-
-            # if the task not started yet, update progress
-            upload_progress!(@waiting[ans.to_i], 10) unless @waiting[ans.to_i].progress > 0
+            update_task @waiting[ans.to_i]            
           else
             error "Invalid input #{ans}. Can not continue." if ans and ans.size > 0
           end
