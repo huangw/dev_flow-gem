@@ -20,11 +20,11 @@ Work Flow
 
 Under your git working directory:
 
-1. Write a `ROADMAP` file in a specified format
-2. (Optional) create `members.yml` file define known developers
+1. Write a `ROADMAP` file in the specified format
+2. (Optional) create `config/members.yml` file define known developers
 2. Run `dw` command 
 
-Sub-commands for typical work flow jobs are:
+Sub-commands for typical development working flow jobs are:
 
     $ dw [info]            # show task information
 
@@ -80,13 +80,13 @@ treated as information header. Which should be in YAML format and should at leas
 
 If you define `year` in the header, you can write date in `mm/dd` format instead 
 of `yyyy/mm/dd`. Usually you should define developers in a separate `members.yml` file,
-but you can define extra members in the header area too (usually for who only join to
+but you can define extra `members` in the header area too (usually for who only join to
 one or few projects).
 
 ### Team and Leader
 
 Leader has a higher priority than team members, only leader can edit roadmap, 
-close a task branch, and make a release, etc.
+close a task branch, and make a release.
 
 If you also defines `supervisor`, `moderator`, they can update the roadmap too,
 but can not close or release a branch.
@@ -138,8 +138,10 @@ If the task need more than one resources use ; to separate them.
 You should modify code only in non-trunk branches and merge your change into trunks 
 according the following roles.
 
-- The `master` trunk is a production ready branch, `develop` is the **integration** branch
-that contains latest code of completed feature that _passed_all_integration_ test.
+- The `master` trunk is a production ready branch
+
+- `develop` is the **integration** trunk that contains latest code of completed 
+features that _passed_all_integration_ tests.
 
 - You write programs under **task branches** that created from `develop`. You should 
 use `dw` often to merge newest changes from `develop` trunk.
@@ -160,48 +162,51 @@ branches will merged into `master` trunk.
 in the development flow (for example event for team code review, 
 customer acceptance review, etc.), but do not affect version numbers, so do other tasks.
 
-Sometimes you may want to use 'prepare releases' such as `release_v0.1a`, `release_v0.1b`, 
-avoid sandwich tasks between prepare releases and releases.
+Sometimes you may want to use 'prepare releases' such as `release_v0.1a`, 
+`release_v0.1b`,  avoid sandwich tasks between prepare releases and releases.
 
 Local Configuration
 ---------------------
 
-Default is stored in `.dev_flow` file and will be set to `git`'s ignore list (`.gitignore`) 
-(so these settings only affect your local working directory).
+Default is stored in `.dev_flow` file and will be set to `git`'s ignore list
+(`.gitignore`), so these settings only affect your local working directory.
 
-Without this file `dw` will go into the initialization mode (by asking you some questions).
+Without this file `dw` will go into the initialization mode 
+(by asking you questions about yourself and your git remote server).
 
 You can use `--local-config FILE` to store those information in an other file name.
 
-`.dev_flow` is also in yaml format and the most important key are `whoami` and `git_remote`,
-`whoami` specifies who is currently working on the local working directory, 
-and `git_remote` defines witch git remote server to use (default is `origin`).
-With out `git_remote` the `dw` command will not try to communicate to remote git server.
+`.dev_flow` is also in yaml format and the most important key are 
+`whoami` and `git_remote`, `whoami` specifies who is currently working on the 
+local working directory, and `git_remote` defines witch git remote server to use 
+(default is `origin`). 
 
-If `git_remote` defined, `dw` command will try to sync with the remote git server,
-unless you explicitly specify `--offline` (`-o`) option.
+If `git_remote` defined, `dw` command will try to sync with the remote git server
+when you use `dw`, from both remote branch matches your local branch, and `develop`
+trunk. If you do not want to sync, specify the `--offline` (`-o`) option.
 
 Command Details
 -------------------
 
 - `dw init` default command if no `.dev_flow` file found.
 
-- `dw [info]` or `dw` without command will list tasks. If `git_remote` defined, it will
-try to merge newest changes from remote git server (from your branch and `develop` trunk).
+- `dw [info]` or `dw` without command will list tasks defined in `ROADMAP`. 
+If current branch is `develop`, `dw` also ask you for switch to branches.
 
-- `dw switch [branch]` will list a workable branches to choose to switch to. If current
-branch is `develop`, `switch` is the default command.
+- `dw switch [branch]` will list a workable branches to choose to switch to,
+but will only show tasks list if the working directory is not clean.
 
-- `dw progress 0-98` set task progress. `dw pg` is an alias of `dw progress`. You are
-encouraged to frequently use this command to store you changes to remote servers (typically 
-several times a day).
+- `dw progress 0-98` set task progress to 0-99. `dw pg` is an alias of `dw progress`. 
+You are encouraged to frequently use this command to push you changes to the 
+remote server (typically several times a day).
 
-- `dw complete` set task progress to 99 (complete a task), urge the leader to review/test and
-close it.
+- `dw complete` set task progress to 99 (mark the task is completed), then you
+should inform the leader to review/test and close it.
 
 - `dw close`/`dw release` close the task by the leader, or release it (to master trunk).
 
-- `dw update-roadmap` or `dw ur` used for update the roadmap (should only be used on `devleop` trunk).
+- `dw update-roadmap` or `dw ur` used for update the roadmap, This command can only 
+be used on `devleop` trunk.
 
-- `dw cleanup` will delete local branches corresponding completed tasks.
+- `dw clean` will delete local branches corresponding completed tasks.
 
