@@ -8,7 +8,6 @@ module DevFlow
       current_task = self.task
       error "Not on a known task branch. Can not continue." unless current_task
 
-      info "Assigned resources for current task: " + current_task.resources.join(", ")
       info "Task resource list are #{current_task.resources.join(',')}, you are #{@config["whoami"]}"
       unless current_task.resources.include?(@config["whoami"]) 
         if i_have_power?

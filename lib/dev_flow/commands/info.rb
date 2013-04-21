@@ -17,14 +17,20 @@ module DevFlow
       self.hello
 
       current_task = self.task
-      self.ask_rebase if current_task or in_trunk?
+      if current_task or in_trunk?
+        self.ask_rebase 
+      else
+        error "Not in a known task branch"
+      end
 
-      # if complete, switch to develop
-      if current_task.is_completed?
-        warn "Your task is completed and closed, now swith to develop trunk"
-        `git checkout develop`
-        warn "Your may want `dw clean` your local working directory"
-        exit
+      if current_task
+        # if complete, switch to develop
+        if current_task.is_completed?
+          warn "Your task is completed and closed, now swith to develop trunk"
+          `git checkout develop`
+          warn "Your may want `dw clean` your local working directory"
+          exit
+        end      
       end
 
       puts hr
