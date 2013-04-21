@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # vim: syn=ruby
 
-# $: << 'lib' # debug only
+$: << 'lib' # debug only
 
 require "optparse"
 require "term/ansicolor"

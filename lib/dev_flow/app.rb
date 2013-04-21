@@ -72,6 +72,10 @@ module DevFlow
       @logger.info "[INFO] " + msg
     end
 
+    def debug msg
+      @logger.debug "[DEBUG] " + msg
+    end
+
     # helper function
     # ------------------------------
     def all_member_names
@@ -120,6 +124,10 @@ module DevFlow
 
     def tasks_for_close 
       @roadmap.tasks.select {|task| task.progress == 99}
+    end
+
+    def sync?
+      @config["git_remote"] and (not @config[:offline])
     end
 
     # display informations
@@ -188,21 +196,21 @@ module DevFlow
     # interactive methods with git remote server
     # ------------------------------------------------------
     def ask_rebase force = false
-      return false if @config[:offline]
+      # return false unless sync? #if @config[:offline]
 
-      unless force
-        print "Rebase your wokring directory? [Y/n]:".bold.yellow
-        ans = STDIN.gets.chomp!
-        return false if ans == 'n'
-      end
+      #unless force
+      #  print "Rebase your wokring directory? [Y/n]:".bold.yellow
+      #  ans = STDIN.gets.chomp!
+      #  return false if ans == 'n'
+      #end
 
       # do the rebase:
-      if @config["git_remote"]
+      if sync?
         info "Rebase you working directory from #{@config["git_remote"]}/devleop"
         @git.rebase! @config["git_remote"], 'develop'
         load_roadmap # load roadmap again
       else
-        info "Git remote not defined, skip rebase."
+        warn "Git remote not defined, skip rebase."
       end
     end
 

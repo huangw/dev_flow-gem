@@ -6,10 +6,13 @@
 !_TAG_PROGRAM_VERSION	5.8	//
 App	lib/dev_flow/app.rb	/^  class App$/;"	c	class:DevFlow
 Cleanup	lib/dev_flow/commands/cleanup.rb	/^  class Cleanup < App$/;"	c	class:DevFlow
+Close	lib/dev_flow/commands/close.rb	/^  class Close < App$/;"	c	class:DevFlow
 Complete	lib/dev_flow/commands/complete.rb	/^  class Complete < App$/;"	c	class:DevFlow
+DateName	lib/dev_flow/date_name.rb	/^module DateName$/;"	m
 DevFlow	lib/dev_flow.rb	/^module DevFlow$/;"	m
 DevFlow	lib/dev_flow/app.rb	/^module DevFlow$/;"	m
 DevFlow	lib/dev_flow/commands/cleanup.rb	/^module DevFlow$/;"	m
+DevFlow	lib/dev_flow/commands/close.rb	/^module DevFlow$/;"	m
 DevFlow	lib/dev_flow/commands/complete.rb	/^module DevFlow$/;"	m
 DevFlow	lib/dev_flow/commands/info.rb	/^module DevFlow$/;"	m
 DevFlow	lib/dev_flow/commands/init.rb	/^module DevFlow$/;"	m
@@ -30,10 +33,10 @@ RoadMap	lib/dev_flow/roadmap.rb	/^  class RoadMap$/;"	c	class:DevFlow
 String	bin/dw	/^class String; include Term::ANSIColor end$/;"	c
 Task	lib/dev_flow/task.rb	/^  class Task$/;"	c	class:DevFlow
 Task	lib/dev_flow/task_console.rb	/^  class Task$/;"	c	class:DevFlow
-UpdateRoadmap	lib/dev_flow/commands/ur.rb	/^  class UpdateRoadmap < App$/;"	c	class:DevFlow
+Ur	lib/dev_flow/commands/ur.rb	/^  class Ur < App$/;"	c	class:DevFlow
 add_to_gitignore	lib/dev_flow/commands/init.rb	/^    def add_to_gitignore$/;"	f	class:DevFlow.Init
 all_member_names	lib/dev_flow/app.rb	/^    def all_member_names$/;"	f	class:DevFlow
-as_title	lib/dev_flow/task_console.rb	/^    def as_title header$/;"	f	class:DevFlow.Task
+as_title	lib/dev_flow/task_console.rb	/^    def as_title header = ' '$/;"	f	class:DevFlow.Task
 ask_rebase	lib/dev_flow/app.rb	/^    def ask_rebase force = false$/;"	f	class:DevFlow.hr.hrb
 branches	lib/dev_flow/girc.rb	/^    def branches$/;"	f
 config	lib/dev_flow/girc.rb	/^    def config$/;"	f	class:DevFlow
@@ -75,31 +78,36 @@ is_urgent?	lib/dev_flow/task.rb	/^    def is_urgent?  # usually orange$/;"	f	cla
 is_workable?	lib/dev_flow/task_console.rb	/^    def is_workable?$/;"	f	class:DevFlow.Task
 last_task	lib/dev_flow/roadmap.rb	/^    def last_task$/;"	f	class:DevFlow.RoadMap
 leader_name	lib/dev_flow/app.rb	/^    def leader_name$/;"	f	class:DevFlow
+load_roadmap	lib/dev_flow/app.rb	/^    def load_roadmap$/;"	f	class:DevFlow.App
 me	lib/dev_flow/girc.rb	/^    def me$/;"	f
 modified_files	lib/dev_flow/girc.rb	/^    def modified_files$/;"	f	class:DevFlow.Girc
 new_branch!	lib/dev_flow/girc.rb	/^    def new_branch! branch, remote=nil$/;"	f
+new_version	lib/dev_flow/app.rb	/^    def new_version branch_name$/;"	f	class:DevFlow.hr.hrb
+new_version	spec/version_spec.rb	/^def new_version branch_name, git_tags$/;"	f
 parse	lib/dev_flow/roadmap.rb	/^    def parse file = nil$/;"	f	class:DevFlow.RoadMap
 parse	lib/dev_flow/task.rb	/^    def parse line, headers = {}$/;"	f	class:DevFlow.Task
-process	lib/dev_flow/commands/info.rb	/^    def process$/;"	f	class:DevFlow.Info
 process!	lib/dev_flow/commands/cleanup.rb	/^    def process!$/;"	f	class:DevFlow.Cleanup
+process!	lib/dev_flow/commands/close.rb	/^    def process!$/;"	f	class:DevFlow.Close
 process!	lib/dev_flow/commands/complete.rb	/^    def process!$/;"	f	class:DevFlow.Complete
 process!	lib/dev_flow/commands/info.rb	/^    def process!$/;"	f	class:DevFlow.Info
 process!	lib/dev_flow/commands/init.rb	/^    def process!$/;"	f	class:DevFlow.Init
 process!	lib/dev_flow/commands/progress.rb	/^    def process!$/;"	f	class:DevFlow.Progress
-process!	lib/dev_flow/commands/ur.rb	/^    def process!$/;"	f	class:DevFlow.UpdateRoadmap
+process!	lib/dev_flow/commands/ur.rb	/^    def process!$/;"	f	class:DevFlow.Ur
 pull!	lib/dev_flow/girc.rb	/^    def pull! remote = 'origin'$/;"	f
 rebase!	lib/dev_flow/girc.rb	/^    def rebase! remote = 'origin', branch = 'develop'$/;"	f
 remote_list	lib/dev_flow/girc.rb	/^    def remote_list$/;"	f
-rewrite	lib/dev_flow/roadmap.rb	/^    def rewrite task_hash$/;"	f	class:DevFlow.RoadMap
+rewrite!	lib/dev_flow/roadmap.rb	/^    def rewrite! task_hash$/;"	f	class:DevFlow.RoadMap
 stash!	lib/dev_flow/girc.rb	/^    def stash!$/;"	f
 stash_pop!	lib/dev_flow/girc.rb	/^    def stash_pop!$/;"	f
 switch_to!	lib/dev_flow/app.rb	/^    def switch_to! branch$/;"	f	class:DevFlow.hr.hrb
 task	lib/dev_flow/app.rb	/^    def task$/;"	f	class:DevFlow
 tasks_for_close	lib/dev_flow/app.rb	/^    def tasks_for_close $/;"	f	class:DevFlow
+team_member_names	lib/dev_flow/roadmap.rb	/^    def team_member_names$/;"	f	class:DevFlow.RoadMap
 title	lib/dev_flow/roadmap.rb	/^    def title$/;"	f	class:DevFlow.RoadMap
-upload_progress!	lib/dev_flow/app.rb	/^    def upload_progress! task, progress, is_complete$/;"	f	class:DevFlow.hr.hrb
+upload_progress!	lib/dev_flow/app.rb	/^    def upload_progress! task, progress, is_complete = false$/;"	f	class:DevFlow.hr.hrb
 user_name	lib/dev_flow/app.rb	/^    def user_name$/;"	f	class:DevFlow
 validate!	lib/dev_flow/task.rb	/^    def validate!$/;"	f	class:DevFlow.Task
 warn	lib/dev_flow/app.rb	/^    def warn msg$/;"	f	class:DevFlow
 wd_clean?	lib/dev_flow/girc.rb	/^    def wd_clean?$/;"	f
 write_local_config	lib/dev_flow/commands/init.rb	/^    def write_local_config hash$/;"	f	class:DevFlow.Init
+zh	lib/dev_flow/date_name.rb	/^  def self.zh from_date, to_date = DateTime.now$/;"	F	class:DateName

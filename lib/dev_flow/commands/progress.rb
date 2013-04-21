@@ -22,9 +22,11 @@ module DevFlow
 
       info "commit your progress"
       `git commit -am '#{message}'`
-      if @config["git_remote"]
+      if sync?
         info "push your progress to remote server"
         `git push #{@config["git_remote"]} #{current_task.branch_name}`
+      else
+        warn "your change did not pushed to the remote server."
       end
       
       # rewrite progress in ROADMAP file under develop trunk
