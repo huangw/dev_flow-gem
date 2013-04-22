@@ -1,11 +1,37 @@
 module DevFlow
   class Info < App
 
+    def update_task task
+      if task.progress > 0
+        # update your work directory
+        `git pull #{@config["git_remote"]} #{task.branch_name}` if sync?
+      else
+        # if the task not started yet, update progress
+        upload_progress!(task, 10)
+      end
+
+      ask_rebase
+    end
+
     def process!
       self.hello
 
       current_task = self.task
-      self.ask_rebase if current_task or in_trunk?
+      if current_task or in_trunk?
+        self.ask_rebase 
+      else
+        error "Not in a known task branch"
+      end
+
+      if current_task
+        # if complete, switch to develop
+        if current_task.is_completed?
+          warn "Your task is completed and closed, now swith to develop trunk"
+          `git checkout develop`
+          warn "Your may want `dw clean` your local working directory"
+          exit
+        end      
+      end
 
       puts hr
 
@@ -21,26 +47,30 @@ module DevFlow
         # if work directory is clean, ready to switch
         if i_am_leader? and in_release? # concentrate
           puts "You are in a release branch, please release it as soon as possible."
-        else # otherwise show switch options
-          puts "You switch to other branches:".bold.yellow
-          puts "Type #{0.to_s.bold} to switch to develop trunk.".bold.blue unless @git.current_branch == 'develop'
-          puts "Simply press enter to keep working on the current branch."
-          print @waiting.keys.join(", ") + ":"
+        else # otherwise show switch @config
 
-          ans = STDIN.gets.chomp!
-          if ans == 0.to_s
-            switch_to! 'develop'
-            `git pull #{@config["git_remote"]} develop` if @config["git_remote"]
-          elsif @waiting[ans.to_i]
-            switch_to! @waiting[ans.to_i].branch_name
-
-            # update your work directory
-            `git pull #{@config["git_remote"]} #{@waiting[ans.to_i].branch_name}` if @config["git_remote"] and @waiting[ans.to_i].progress > 0
-
-            # if the task not started yet, update progress
-            upload_progress!(@waiting[ans.to_i], 10) unless @waiting[ans.to_i].progress > 0
+          @config[:switch] = true if @git.current_branch == 'develop'
+          if @config[:switch] and @config[:branch]
+            switch_task = self.task @config[:branch]
+            error "Can not find ROADMAP task for branch #{@config[:branch]}" unless switch_task
+            switch_to! @config[:branch] if @config[:branch]
+            update_task switch_task
+          elsif @config[:switch]
+            puts "You can switch to other branches:".bold.yellow
+            puts "Type #{0.to_s.bold} to switch to develop trunk.".bold.blue unless @git.current_branch == 'develop'
+            print @waiting.keys.join(", ") + ":"          
+            ans = STDIN.gets.chomp!
+            if ans == 0.to_s
+              switch_to! 'develop'
+              `git pull #{@config["git_remote"]} develop` if @config["git_remote"]
+            elsif @waiting[ans.to_i]
+              switch_to! @waiting[ans.to_i].branch_name
+              update_task @waiting[ans.to_i]            
+            else
+              error "Invalid input #{ans}. Can not continue." if ans and ans.size > 0
+            end
           else
-            error "Invalid input #{ans}. Can not continue." if ans and ans.size > 0
+            # dw show information only. quit.
           end
         end
       else # if the wd is not clean
