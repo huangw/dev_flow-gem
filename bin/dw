@@ -26,6 +26,7 @@ optparse = OptionParser.new do |opts|
   opts.separator "  close          : close the task as a leader"
   opts.separator "  release        : close a release task"
   opts.separator "  clean[up]      : delete local branches that already completed"
+  opts.separator "  gantt          : create gantt chart html files under docs folder"
   opts.separator ""
   opts.separator "Options:"
 
@@ -67,7 +68,7 @@ command = ARGV[0] || 'info'
 cmd_alias = {'pg' => 'progress', 'update-roadmap' => 'ur', 'clean' => 'cleanup', 's' => 'switch'}
 command = cmd_alias[command] if cmd_alias[command]
 
-if %w[info init complete progress close release ur update-roadmap cleanup clean switch].include? command
+if %w[info init complete progress close release ur update-roadmap cleanup clean switch gantt].include? command
   options[:command] = command
 else
   puts "Unknown command #{command}".red

@@ -9,6 +9,7 @@ require 'dev_flow/member'
 
 # presenter
 require 'dev_flow/task_console'
+require 'dev_flow/task_js'
 
 # application and commands
 require 'dev_flow/app'
