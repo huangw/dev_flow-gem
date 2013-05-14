@@ -51,6 +51,11 @@ optparse = OptionParser.new do |opts|
     options[:offline] = true
   end
 
+  options[:docs] = 'docs'
+  opts.on('-d DIR', '--docs DIR', 'document directory for gantt chart') do |dir|
+    options[:docs] = dir
+  end
+
   opts.on('-v', '--verbose', 'print more messages') do
     options[:verbose] = true
   end

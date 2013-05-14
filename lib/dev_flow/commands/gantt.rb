@@ -34,12 +34,13 @@ module DevFlow
 
     ## create gantt chart from templates
     def process!
-      html_file = "docs/gantt.html"
-      FileUtils.mkdir_p "docs" unless File.directory? "docs"
+      docs = @config[:docs]
+      html_file = "#{docs}/gantt.html"
+      FileUtils.mkdir_p "#{docs}" unless File.directory? "#{docs}"
 
-      tpl_dir = File.expand_path(File.dirname(__FILE__) + "/templates")
-      FileUtils.cp_r "#{tpl_dir}/css", "docs"
-      FileUtils.cp_r "#{tpl_dir}/js", "docs"
+      tpl_dir = File.expand_path(File.dirname(__FILE__) + "/../../../templates")
+      FileUtils.cp_r "#{tpl_dir}/css", docs
+      FileUtils.cp_r "#{tpl_dir}/js", docs
       
       wfh = File.open(html_file, "w:utf-8")
       wfh.puts Erubis::Eruby.new(File.read("#{tpl_dir}/jsgantt.html.erb")).result(:rm => @roadmap, :is_roadmap => true, :git_log => git_log, :resource => nil)
