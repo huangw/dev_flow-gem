@@ -19,7 +19,7 @@ module DevFlow
     end
     
     def title
-      @config[:title]
+      @config["title"]
     end
 
     def team_member_names

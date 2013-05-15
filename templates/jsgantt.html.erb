@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="./css/jsgantt.css" />
+    <script language="javascript" src="./js/jsgantt.js"></script>
+    <title>Gantt Chart | <%= rm.title %></title>
+</head>
+<body>
+  <h2><%= rm.title %>
+    <% if rm.file %>
+      <% unless rm.file.match(/ROADMAP$/) %> (<span style="color: #999999"><%= rm.file.gsub(/^.*ROADMAP\_/, "ROADMAP_") %></span>) <% end %>
+    <% end %>
+  </h2>
+
+<div style="position:relative" class="gantt" id="GanttChartDIV"></div>
+<script>
+    var g = new JSGantt.GanttChart('g',document.getElementById('GanttChartDIV'), 'day');
+    g.setShowRes(1); // Show/Hide Responsible (0/1)
+    g.setShowDur(1); // Show/Hide Duration (0/1)
+    g.setShowComp(0); //
+    g.setCaptionType('Caption');  // Set to Show Caption
+    g.setShowStartDate(0); // Show/Hide Start Date(0/1)
+    g.setShowEndDate(0); // Show/Hide End Date(0/1)
+    //g.setDateDisplayFormat('yyyy-mm-dd') // Set format to display dates ('mm/dd/yyyy', 'dd/mm/yyyy', 'yyyy-mm-dd')
+    g.setFormatArr("day","week","month") // Set format options (up to 4 : "minute","hour","day","week","month","quarter")
+
+    if( g ) {
+      <% rm.tasks.each do |task| %>
+      <%= task.as_js resource %>
+      <% end %>
+        g.Draw();
+        g.DrawDependencies();
+    }
+    else
+    {
+        alert("not defined");
+    }
+</script>
+
+
+<% if is_roadmap %>
+<h3>Recent Git Log</h3> 
+<pre><code>
+<%= git_log %>
+</code></pre>
+<% end %>
+
+</body>
+</html>
