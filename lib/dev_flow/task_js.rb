@@ -25,8 +25,8 @@ module DevFlow
       end_day = self.end_date.strftime("%Y%m%d").to_i 
       hex = "B0C4DE" # light steel blue as default 
       hex = "808080" unless self.is_workable? # grey for no able to start
-      hex = "FFD700" if start_day == today and progress == 0 # gold for must start now
       hex = "FFFF00" if self.progress > 0 and self.progress < 100 # blue for working
+      hex = "FFD700" if start_day == today and progress == 0 # gold for must start now
       hex = "FFA500" if end_day == today and self.progress < 100 # orange for master complete today
 
       if resource_
