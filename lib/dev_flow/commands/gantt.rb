@@ -34,6 +34,9 @@ module DevFlow
 
     ## create gantt chart from templates
     def process!
+      error "Not on the develop trunk" unless @git.current_branch == 'develop'
+      # error "Only leader/moderator and supervisor can edit ROADMAP" unless i_have_power?
+
       docs = @config[:docs]
       html_file = "#{docs}/gantt.html"
       FileUtils.mkdir_p "#{docs}" unless File.directory? "#{docs}"
@@ -45,6 +48,13 @@ module DevFlow
       wfh = File.open(html_file, "w:utf-8")
       wfh.puts Erubis::Eruby.new(File.read("#{tpl_dir}/jsgantt.html.erb")).result(:rm => @roadmap, :is_roadmap => true, :git_log => git_log, :resource => nil)
       wfh.close
+
+      # update to server
+      if sync?
+        `git add .`
+        `git commit -am 'update Gantt chart'`
+        `git push #{@config["git_remote"]} develop` 
+      end
     end
 
   end
