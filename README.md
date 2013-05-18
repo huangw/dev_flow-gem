@@ -210,3 +210,6 @@ be used on `devleop` trunk.
 
 - `dw clean` will delete local branches corresponding completed tasks.
 
+- `dw gantt` create HTML/Javascript based Gantt chart under `docs/` folder and push to remote server.
+
+- `dw tm [minutes]` start a stop watch timer for `minutes` (default is 25 minutes).
