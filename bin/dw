@@ -73,7 +73,7 @@ command = ARGV[0] || 'info'
 cmd_alias = {'pg' => 'progress', 'update-roadmap' => 'ur', 'cleanup' => 'clean', 's' => 'switch'}
 command = cmd_alias[command] if cmd_alias[command]
 
-if %w[info init complete progress close release ur update-roadmap cleanup clean switch gantt].include? command
+if %w[info init complete progress close release ur update-roadmap cleanup clean switch gantt tm timer].include? command
   options[:command] = command
 else
   puts "Unknown command #{command}".red
@@ -98,6 +98,8 @@ if command == 'release'
   options[:release] = true
   command = 'close'
 end
+
+command = 'timer' if command == 'tm'
 
 if command == 'switch'
   options[:switch] = true
