@@ -1,5 +1,5 @@
 module DevFlow
-  class Cleanup < App
+  class Clean < App
 
     def process!
       completed_branches = Array.new
