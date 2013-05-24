@@ -15,16 +15,17 @@ module DevFlow
       progress = ARGV[1]
       progress = progress.to_i if progress
       
-      unless (progress and progress > 0 and progress < 99)
+      if (progress and progress > 0 and progress < 99)
+        warn "draw back complete percentage from #{current_task.progress.to_s.bold} to #{progress.to_s.bold}" if current_task.progress > progress
+      else
         if progress
           error "invalid progress. Use percentage between 1 to 98."
         else
-          puts "Current progress for task #{current_task.to_s.bold} is #{current_task.progress.to_s.bold}."
+          puts "Current progress for task #{current_task.display_name.to_s.bold} is #{current_task.progress.to_s.bold}."
+          exit
         end
       end
-
-      warn "draw back complete percentage from #{current_task.progress.to_s.bold} to #{progress.to_s.bold}" if current_task.progress > progress
-
+      
       message = ARGV[2] || "update progress to #{progress}"
       message = "[progress] " + message
 

@@ -146,7 +146,7 @@ module DevFlow
       puts "This is the DevFlow console, version: " + VERSION
       puts hrh
       puts "You are on branch #{@git.current_branch.bold.green}" if @git.current_branch
-      puts "You task is: #{self.task.display_name.bold}" if self.task
+      puts "You task is: #{self.task.display_name.bold}, progress #{self.task.progress.to_s.bold}" if self.task
       puts "You are the #{'leader'.bold} of the project." if self.i_am_leader?
       puts "You are the #{'moderator'.bold} of the project." if self.i_am_moderator?
       puts "You are the #{'supervisor'.bold} of the project." if self.i_am_supervisor?
