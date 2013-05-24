@@ -14,9 +14,17 @@ module DevFlow
       # commit you current branch and push
       progress = ARGV[1]
       progress = progress.to_i if progress
+      
       unless (progress and progress > 0 and progress < 99)
-        error "invalid progress. Use percentage between 1 to 98."
+        if progress
+          error "invalid progress. Use percentage between 1 to 98."
+        else
+          puts "Current progress for task #{current_task.to_s.bold} is #{current_task.progress.to_s.bold}."
+        end
       end
+
+      warn "draw back complete percentage from #{current_task.progress.to_s.bold} to #{progress.to_s.bold}" if current_task.progress > progress
+
       message = ARGV[2] || "update progress to #{progress}"
       message = "[progress] " + message
 
