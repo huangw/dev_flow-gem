@@ -154,7 +154,7 @@ module DevFlow
 
     def display_close_waiting
       return false unless self.tasks_for_close.size > 0
-      puts "There have tasks marked completed and need you to review it:"
+      puts "There have tasks marked completed and need you to review it:".bold.red
       i = 0
       self.tasks_for_close.each do |task|
         i += 1
