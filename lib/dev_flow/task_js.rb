@@ -28,17 +28,18 @@ module DevFlow
       hex = "FFFF00" if self.progress > 0 and self.progress < 100 # blue for working
       hex = "FFD700" if start_day == today and progress == 0 # gold for must start now
       hex = "FFA500" if end_day == today and self.progress < 100 # orange for master complete today
-
-      if resource_
-        hex = "CCCCCC" unless self.resources.include? resource_
-      end
-      
+     
       hex = "008000" if self.is_completed?    # green for completed
       hex = "FF0000" if self.progress < 100 and today > end_day   # red for not completed on time 
       hex = "FF0000" if self.progress == 0 and today > start_day  # red for late start
       hex = "EEE8AA" if self.is_deleted?
       hex = "C0C0C0" if self.is_pending?
      #  puts hex + ":" + self.progress.to_s + ";" + DateTime.now.strftime("%Y%m%d") + ":" + self.start_date.strftime("%Y%m%d")
+
+      if resource_
+        hex = "CCCCCC" unless self.resources.include? resource_
+      end
+
       hex
     end
 
