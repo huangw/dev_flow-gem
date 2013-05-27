@@ -124,9 +124,9 @@ module DevFlow
           if /(?<resource_>\@[a-z\@\;]+)(\:[PD\d\/]+)?/ =~ line
             new_line.gsub!(/(?<resource_>\@[a-z\@\;]+)(\:[PD\d\/]+)?/, resource_ + ":" + progress.to_s)
           elsif /(?<dep_>\-\>.+)$/ =~ line
-            new_line.gsub!(/\s*\-\>.+$/, '@' + self.headers["leader"] + ":" + progress.to_s + " " + dep_)
+            new_line.gsub!(/\s*\-\>.+$/, '@' + self.config["leader"] + ":" + progress.to_s + " " + dep_)
           else
-            new_line += '@' + self.headers["leader"] + ":" + progress.to_s
+            new_line += '@' + self.config["leader"] + ":" + progress.to_s
           end
           wfh.puts new_line
         else
