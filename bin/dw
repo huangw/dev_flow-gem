@@ -47,11 +47,11 @@ optparse = OptionParser.new do |opts|
     raise "the specified members file #{mf} is not exists." unless File.exists? mf
   end
 
-  opts.on('-o', '--offline', 'do not use remote git server') do 
+  opts.on('-o', '--offline', 'do not use remote git server') do
     options[:offline] = true
   end
 
-  options[:docs] = 'docs'
+  options[:docs] = 'doc'
   opts.on('-d DIR', '--docs DIR', 'document directory for gantt chart') do |dir|
     options[:docs] = dir
   end
