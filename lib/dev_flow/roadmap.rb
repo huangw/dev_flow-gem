@@ -1,5 +1,5 @@
 module DevFlow
-  ## a road map represents a list of tasks
+  # a road map represents a list of tasks
   class RoadMap
     attr_accessor :file, :config, :tasks,
       :branch_tasks, # branch name to task hash
@@ -17,7 +17,7 @@ module DevFlow
     def last_task
       @tasks.last
     end
-    
+
     def title
       @config["title"]
     end
@@ -42,7 +42,7 @@ module DevFlow
           in_header += 1
           next
         end
-        
+
         # before any task defined, parse line begin with % as head field:
         if in_header == 1 and @tasks.size == 0
           head_part += line
@@ -50,7 +50,7 @@ module DevFlow
 
         if /^\s*\[(?<plus_>[\+\s]+)\]\s(?<contents_>.+)/ =~ line
           if @tasks.size == 0 and head_part.size > 0
-            hhash = YAML.load(head_part) 
+            hhash = YAML.load(head_part)
             members =  @config["members"] || {}
             members.merge!(hhash["members"]) if hhash["members"] and hhash["members"].is_a?(Hash)
             @config = @config.merge hhash
@@ -119,7 +119,7 @@ module DevFlow
             com_date = DateTime.now.strftime("%m/%d") if DateTime.now.year == @config["year"]
             progress = com_date
           end
-          
+
           new_line = line
           if /(?<resource_>\@[a-z\@\;]+)(\:[PD\d\/]+)?/ =~ line
             new_line.gsub!(/(?<resource_>\@[a-z\@\;]+)(\:[PD\d\/]+)?/, resource_ + ":" + progress.to_s)

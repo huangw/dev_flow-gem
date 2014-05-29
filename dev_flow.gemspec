@@ -15,4 +15,3 @@ Gem::Specification.new 'dev_flow', DevFlow::VERSION do |s|
   s.add_dependency 'term-ansicolor'    # for colorful command line display
   s.add_development_dependency 'rspec', '~> 2.5'
 end
-

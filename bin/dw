@@ -42,6 +42,7 @@ optparse = OptionParser.new do |opts|
 
   options[:members_file] = 'members.yml' if File.exists? ('members.yml')
   options[:members_file] = 'config/members.yml' if File.exists? ('config/members.yml')
+  options[:members_file] = '../members.yml' if File.exists? ('../members.yml')
   opts.on('-m FILE', '--members_file FILE', 'use an other members file') do |mf|
     options[:members_file] = mf
     raise "the specified members file #{mf} is not exists." unless File.exists? mf
