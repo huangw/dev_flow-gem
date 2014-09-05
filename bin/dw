@@ -1,28 +1,23 @@
+#!/usr/bin/env ruby
 # encoding: utf-8
 # vi: ft=ruby
-require 'commander/import'
+
+lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
+$LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
+
 require 'dev_flow'
+require 'commander/import'
 
 # :name is optional, otherwise uses the basename of this executable
-program :name, 'Foo Bar'
-program :version, '1.0.0'
-program :description, 'Stupid command that prints foo or bar.'
+program :name, 'dw: Develop Flow Management Tool'
+program :version, DevFlow::VERSION
+program :description, 'utility functions guiding development based on git.'
 
-command :foo do |c|
+command :opa do |c|
   c.syntax = 'foobar foo'
   c.description = 'Displays foo'
   c.action do |args, options|
-    say 'foo'
-  end
-end
-
-command :bar do |c|
-  c.syntax = 'foobar bar [options]'
-  c.description = 'Display bar with optional prefix and suffix'
-  c.option '--prefix STRING', String, 'Adds a prefix to bar'
-  c.option '--suffix STRING', String, 'Adds a suffix to bar'
-  c.action do |args, options|
-    options.default :prefix => '(', :suffix => ')'
-    say "#{options.prefix}bar#{options.suffix}"
+    p args
+    p options
   end
 end
