@@ -13,11 +13,11 @@ program :name, 'dw: Develop Flow Management Tool'
 program :version, DevFlow::VERSION
 program :description, 'utility functions guiding development based on git.'
 
-command :opa do |c|
-  c.syntax = 'foobar foo'
-  c.description = 'Displays foo'
-  c.action do |args, options|
-    p args
-    p options
-  end
-end
+# command :opa do |c|
+#   c.syntax = 'dw foo'
+#   c.description = 'Displays foo'
+#   c.action do |args, options|
+#     p args
+#     p options
+#   end
+# end
