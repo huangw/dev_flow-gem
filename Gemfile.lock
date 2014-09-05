@@ -1,0 +1,23 @@
+PATH
+  remote: .
+  specs:
+    dev_flow (1.0.1)
+      commander (~> 4.2)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    commander (4.2.0)
+      highline (~> 1.6.11)
+    highline (1.6.21)
+    rake (10.3.2)
+    yard (0.8.7.4)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bundler (~> 1.6)
+  dev_flow!
+  rake
+  yard

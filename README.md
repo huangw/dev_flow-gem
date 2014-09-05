@@ -1,4 +1,6 @@
-# Dev Flow Management Tool Based on Git
+# Develop Flow Management Tool Based on Git
+
+WARNING: UNDER DEVELOPING, NOT COMPLETED
 
 ## Concept
 
