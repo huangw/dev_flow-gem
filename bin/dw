@@ -5,19 +5,24 @@
 lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
 $LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
 
-require 'dev_flow'
 require 'commander/import'
+require 'dev_flow'
 
 # :name is optional, otherwise uses the basename of this executable
-program :name, 'dw: Develop Flow Management Tool'
+program :name, 'dw: Project Develop Flow Management Tool Based on Git'
 program :version, DevFlow::VERSION
-program :description, 'utility functions guiding development based on git.'
+program :description, 'Provide convenient commands to guide development flow like, and gather project information from source files.
+'
 
-# command :opa do |c|
-#   c.syntax = 'dw foo'
-#   c.description = 'Displays foo'
-#   c.action do |args, options|
-#     p args
-#     p options
-#   end
-# end
+global_option '-d', '--debug', 'Display debug messages'
+
+command :config do |c|
+  c.syntax = 'dw config'
+  c.description = 'Display or update configurations'
+  c.action do |args, options|
+    DevFlow::Command::Config.new(args, options).run!
+  end
+end
+
+# never_trace!
+# default_command :help
