@@ -8,20 +8,18 @@ Base	lib/dev_flow/command/base.rb	/^    class Base$/;"	c	class:DevFlow.Command
 Command	lib/dev_flow/command/base.rb	/^  module Command$/;"	m	class:DevFlow
 Command	lib/dev_flow/command/config.rb	/^  module Command$/;"	m	class:DevFlow
 Config	lib/dev_flow/command/config.rb	/^    class Config < Base$/;"	c	class:DevFlow.Command
-Config	lib/dev_flow/config.rb	/^  class Config$/;"	c	class:DevFlow
 DevFlow	lib/dev_flow.rb	/^module DevFlow$/;"	m
 DevFlow	lib/dev_flow/command/base.rb	/^module DevFlow$/;"	m
 DevFlow	lib/dev_flow/command/config.rb	/^module DevFlow$/;"	m
-DevFlow	lib/dev_flow/config.rb	/^module DevFlow$/;"	m
+DevFlow	lib/dev_flow/helpers.rb	/^module DevFlow$/;"	m
 DevFlow	lib/dev_flow/version.rb	/^module DevFlow$/;"	m
-Helpers	lib/dev_flow.rb	/^  module Helpers$/;"	m
+Helpers	lib/dev_flow/helpers.rb	/^  module Helpers$/;"	m	class:DevFlow
 String	lib/dev_flow.rb	/^class String; include Term::ANSIColor end$/;"	c
 before_run	lib/dev_flow/command/base.rb	/^      def before_run$/;"	f	class:DevFlow.Command.Base
-clean_caller	lib/dev_flow.rb	/^    def clean_caller(tc)$/;"	f	class:Helpers
-dd	lib/dev_flow.rb	/^    def dd(msg)$/;"	f	class:Helpers
+clean_caller	lib/dev_flow/helpers.rb	/^    def clean_caller(tc)$/;"	f	class:DevFlow.Helpers
+dd	lib/dev_flow/helpers.rb	/^    def dd(msg)$/;"	f	class:DevFlow.Helpers
 example_file	spec/spec_helper.rb	/^def example_file(file)$/;"	f
-find_git_directory	lib/dev_flow/config.rb	/^    def find_git_directory$/;"	f	class:DevFlow.Config
-init	lib/dev_flow.rb	/^    def init(args, options)$/;"	f	class:DevFlow
+find_working_directory	lib/dev_flow.rb	/^    def find_working_directory$/;"	f	class:DevFlow
+init	lib/dev_flow.rb	/^    def init(args, options, dir = nil)$/;"	f	class:DevFlow
 initialize	lib/dev_flow/command/base.rb	/^      def initialize(args, options)$/;"	f	class:DevFlow.Command.Base
-initialize	lib/dev_flow/config.rb	/^    def initialize(dir = nil)$/;"	f	class:DevFlow.Config
 run!	lib/dev_flow/command/base.rb	/^      def run!$/;"	f	class:DevFlow.Command.Base
