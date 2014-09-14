@@ -2,7 +2,7 @@
 # encoding: utf-8
 # vi: ft=ruby
 
-lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
+lib = File.expand_path('../../lib/', __FILE__)
 $LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
 
 require 'commander/import'
@@ -11,10 +11,12 @@ require 'dev_flow'
 # :name is optional, otherwise uses the basename of this executable
 program :name, 'dw: Project Develop Flow Management Tool Based on Git'
 program :version, DevFlow::VERSION
-program :description, 'Provide convenient commands to guide development flow like, and gather project information from source files.
-'
+program :description, 'Provide convenient commands to guide development ' +
+                      'flow, and collect project information from files.'
 
-global_option '-d', '--debug', 'Display debug messages'
+global_option('-d', '--debug', 'Display debug messages') do
+  DevFlow.debug = true
+end
 
 command :config do |c|
   c.syntax = 'dw config'
@@ -24,5 +26,5 @@ command :config do |c|
   end
 end
 
-never_trace!
-# default_command :help
+# never_trace!
+# # default_command :help

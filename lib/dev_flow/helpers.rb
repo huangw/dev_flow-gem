@@ -3,7 +3,7 @@ module DevFlow
   module Helpers
     # show debug messages
     def dd(msg)
-      say "|#{clean_caller(caller[0]).white}| #{msg}" if DevFlow.options.debug
+      say "|#{clean_caller(caller[0]).white}| #{msg}" if DevFlow.debug
     end
 
     private

@@ -39,5 +39,3 @@ static project portal (use html and css files).
 - Current task information `dw`
 
 - Progress management `dw pg <percentage>`
-
-## Application Structure
