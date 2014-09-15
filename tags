@@ -11,15 +11,28 @@ Config	lib/dev_flow/command/config.rb	/^    class Config < Base$/;"	c	class:DevF
 DevFlow	lib/dev_flow.rb	/^module DevFlow$/;"	m
 DevFlow	lib/dev_flow/command/base.rb	/^module DevFlow$/;"	m
 DevFlow	lib/dev_flow/command/config.rb	/^module DevFlow$/;"	m
+DevFlow	lib/dev_flow/git_config.rb	/^module DevFlow$/;"	m
 DevFlow	lib/dev_flow/helpers.rb	/^module DevFlow$/;"	m
 DevFlow	lib/dev_flow/version.rb	/^module DevFlow$/;"	m
+GitConfig	lib/dev_flow/git_config.rb	/^  module GitConfig$/;"	m	class:DevFlow
 Helpers	lib/dev_flow/helpers.rb	/^  module Helpers$/;"	m	class:DevFlow
+MockGitConfig	spec/git_config_spec.rb	/^class MockGitConfig$/;"	c
 String	lib/dev_flow.rb	/^class String; include Term::ANSIColor end$/;"	c
 before_run	lib/dev_flow/command/base.rb	/^      def before_run$/;"	f	class:DevFlow.Command.Base
 clean_caller	lib/dev_flow/helpers.rb	/^    def clean_caller(tc)$/;"	f	class:DevFlow.Helpers
+config_key	lib/dev_flow/git_config.rb	/^    def config_key(arg)$/;"	f	class:DevFlow.GitConfig
+configured?	lib/dev_flow/command/base.rb	/^      def configured?$/;"	f	class:DevFlow.Command.Base
+current_user	lib/dev_flow/command/base.rb	/^      def current_user$/;"	f	class:DevFlow.Command.Base
 dd	lib/dev_flow/helpers.rb	/^    def dd(msg)$/;"	f	class:DevFlow.Helpers
 example_file	spec/spec_helper.rb	/^def example_file(file)$/;"	f
-find_working_directory	lib/dev_flow.rb	/^    def find_working_directory$/;"	f	class:DevFlow
-init	lib/dev_flow.rb	/^    def init(args, options, dir = nil)$/;"	f	class:DevFlow
-initialize	lib/dev_flow/command/base.rb	/^      def initialize(args, options)$/;"	f	class:DevFlow.Command.Base
+find_working_directory	lib/dev_flow/command/base.rb	/^      def find_working_directory(dir = nil)$/;"	f	class:DevFlow.Command.Base
+get_config	lib/dev_flow/git_config.rb	/^    def get_config(arg)$/;"	f	class:DevFlow.GitConfig
+global_key?	lib/dev_flow/git_config.rb	/^    def global_key?(arg)$/;"	f	class:DevFlow.GitConfig
+global_keys	lib/dev_flow/git_config.rb	/^    def global_keys$/;"	f	class:DevFlow.GitConfig
+initialize	lib/dev_flow/command/base.rb	/^      def initialize(args, options, dir = nil)$/;"	f	class:DevFlow.Command.Base
+known_keys	lib/dev_flow/git_config.rb	/^    def known_keys$/;"	f	class:DevFlow.GitConfig
+local_key?	lib/dev_flow/git_config.rb	/^    def local_key?(arg)$/;"	f	class:DevFlow.GitConfig
+local_keys	lib/dev_flow/git_config.rb	/^    def local_keys$/;"	f	class:DevFlow.GitConfig
 run!	lib/dev_flow/command/base.rb	/^      def run!$/;"	f	class:DevFlow.Command.Base
+set_global_config	lib/dev_flow/git_config.rb	/^    def set_global_config(arg, value)$/;"	f	class:DevFlow.GitConfig
+set_local_config	lib/dev_flow/git_config.rb	/^    def set_local_config(arg, value)$/;"	f	class:DevFlow.GitConfig

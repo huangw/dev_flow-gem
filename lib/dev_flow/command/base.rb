@@ -7,13 +7,15 @@ module DevFlow
     # Common operations for all command
     class Base
       include DevFlow::Helpers
+      include DevFlow::GitConfig
+
       attr_reader :args, :options, :dir, :git
 
       # Receive and save arguments and options from the command line
       def initialize(args, options, dir = nil)
         @args, @options = args, options
         @dir = find_working_directory(dir)
-        fail 'Can not find .git directory under ' +
+        fail 'Can not find .git directory under ' \
              'current directory and all upper directories' unless @dir
         @git = Git.open(@dir)
         say "(in #{@dir.bold})" unless @dir == Dir.pwd
@@ -42,40 +44,10 @@ module DevFlow
         get_config('user')
       end
 
-      def get_config(arg)
-        key = config_key(arg)
-        git.config(key) || Git.global_config(key)
-      end
-
-    # def set_config(arg, value)
-    #   key = config_key(arg)
-    #   if get_config(key)
-    #     git.config(key, value)
-    #     say 'set in local `.git/config`'
-    #   else
-    #     Git.global_config(key, value)
-    #     say 'set git config with --global'
-    #   end
-    # end
-    #
-      # def set_local_config(arg, value)
-      #   key = config_key(arg)
-      #   git.config(key, value)
-      # end
-
-      def config_keys
-        %w(user gitlab.host gitlab.private_token backbone)
-      end
-
-      def git_config_key(arg)
-        key = arg.sub(/\Adw\./, '')
-        fail "unknown config key #{arg}" unless config_keys.include?(key)
-        "dw.#{key}"
-      end
-
       private
 
       # find working directory unless explicitly given
+      # rubocop:disable CyclomaticComplexity
       def find_working_directory(dir = nil)
         return dir if dir && File.directory?(File.join(dir, '.git'))
         return Dir.pwd if File.directory?(File.join(Dir.pwd, '.git'))
