@@ -1,5 +1,5 @@
 require 'fileutils'
-require 'erubis'
+require 'erubies'
 
 module DevFlow
   class Gantt < App
@@ -44,7 +44,7 @@ module DevFlow
       tpl_dir = File.expand_path(File.dirname(__FILE__) + "/../../../templates")
       FileUtils.cp_r "#{tpl_dir}/css", docs
       FileUtils.cp_r "#{tpl_dir}/js", docs
-      
+
       wfh = File.open(html_file, "w:utf-8")
       wfh.puts Erubis::Eruby.new(File.read("#{tpl_dir}/jsgantt.html.erb")).result(:rm => @roadmap, :is_roadmap => true, :git_log => git_log, :resource => nil)
       wfh.close
@@ -53,7 +53,7 @@ module DevFlow
       if sync?
         `git add .`
         `git commit -am 'update Gantt chart'`
-        `git push #{@config["git_remote"]} develop` 
+        `git push #{@config["git_remote"]} develop`
       end
     end
 
