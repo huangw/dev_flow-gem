@@ -12,8 +12,8 @@ Gem::Specification.new 'dev_flow', DevFlow::VERSION do |s|
   s.test_files        = Dir.glob("{spec,test}/**/*.rb")
   s.rdoc_options      = %w[--line-numbers --inline-source --title DevFlow --main README.rdoc --encoding=UTF-8]
 
-  s.add_dependency 'term-ansicolor'    # for colorful command line display
-  s.add_dependency 'erubis'    # for colorful command line display
+  s.add_dependency 'term-ansicolor', '~> 1.3'    # for colorful command line display
+  s.add_dependency 'erubis', '~> 2.7'
   s.add_development_dependency 'rspec', '~> 2.5'
 end
 

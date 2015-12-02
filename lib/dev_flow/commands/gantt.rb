@@ -1,5 +1,5 @@
 require 'fileutils'
-require 'erubies'
+require 'erubis'
 
 module DevFlow
   class Gantt < App
